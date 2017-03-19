@@ -9,7 +9,7 @@ import nikonorov.net.translator.screens.listscreen.presenter.BaseListScreenPrese
  * email@nikonorov.net
  */
 
-public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
+public class SavedTranslationsPresenterImpl extends BaseListScreenPresenter {
 
     @Override
     public void onStart() {
