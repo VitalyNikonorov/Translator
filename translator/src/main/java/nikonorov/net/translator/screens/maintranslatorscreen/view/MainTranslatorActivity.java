@@ -1,4 +1,4 @@
-package nikonorov.net.translator.maintranslatorscreen.view;
+package nikonorov.net.translator.screens.maintranslatorscreen.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,8 +8,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import nikonorov.net.translator.R;
-import nikonorov.net.translator.maintranslatorscreen.presenter.MainTranslatorPresenter;
-import nikonorov.net.translator.maintranslatorscreen.presenter.MainTranslatorPresenterImpl;
+import nikonorov.net.translator.screens.maintranslatorscreen.presenter.MainTranslatorPresenter;
+import nikonorov.net.translator.screens.maintranslatorscreen.presenter.MainTranslatorPresenterImpl;
 
 /**
  * Created by Vitaly Nikonorov on 18.03.17.

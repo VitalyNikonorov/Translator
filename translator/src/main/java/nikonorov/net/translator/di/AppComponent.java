@@ -3,7 +3,7 @@ package nikonorov.net.translator.di;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import nikonorov.net.translator.maintranslatorscreen.model.MainTranslatorModelImpl;
+import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModelImpl;
 import nikonorov.net.translator.network.di.NetworkModule;
 
 /**

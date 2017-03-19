@@ -1,13 +1,13 @@
-package nikonorov.net.translator.maintranslatorscreen.presenter;
+package nikonorov.net.translator.screens.maintranslatorscreen.presenter;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import nikonorov.net.translator.maintranslatorscreen.model.MainTranslatorModel;
-import nikonorov.net.translator.maintranslatorscreen.model.MainTranslatorModelImpl;
-import nikonorov.net.translator.maintranslatorscreen.view.MainTranslatorView;
+import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModel;
+import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModelImpl;
+import nikonorov.net.translator.screens.maintranslatorscreen.view.MainTranslatorView;
 import nikonorov.net.translator.network.model.TranslationResult;
 
 /**

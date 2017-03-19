@@ -1,4 +1,4 @@
-package nikonorov.net.translator.maintranslatorscreen.view;
+package nikonorov.net.translator.screens.maintranslatorscreen.view;
 
 /**
  * Created by Vitaly Nikonorov on 18.03.17.

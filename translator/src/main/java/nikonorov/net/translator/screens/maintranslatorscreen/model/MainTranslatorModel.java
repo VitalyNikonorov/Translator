@@ -1,4 +1,4 @@
-package nikonorov.net.translator.maintranslatorscreen.model;
+package nikonorov.net.translator.screens.maintranslatorscreen.model;
 
 import io.reactivex.Observable;
 import nikonorov.net.translator.network.model.TranslationResult;
