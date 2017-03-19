@@ -12,10 +12,10 @@ import retrofit2.http.Query;
 
 public interface YandexTranslatorAPI {
 
-    @GET("api/v1.5/tr.json/translate")
+    @GET("translate")
     Observable<TranslationResult> translate(
+            @Query("key") String key,
             @Query("text") String text,
             @Query("lang") String lang
     );
-
 }

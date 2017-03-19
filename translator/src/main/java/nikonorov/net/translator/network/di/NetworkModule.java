@@ -1,11 +1,14 @@
 package nikonorov.net.translator.network.di;
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import nikonorov.net.translator.network.YandexTranslatorAPI;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -16,24 +19,24 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetworkModule {
-    private static final String BASE_URL = "https://translate.yandex.net/";
+    private static final String BASE_URL = "https://translate.yandex.net/api/v1.5/tr.json/";
 
     @Provides
     @Singleton
     YandexTranslatorAPI getTranslatorApi() {
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
-        Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl(BASE_URL)
-                        .addConverterFactory(
-                                GsonConverterFactory.create()
-                        );
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build();
 
-        Retrofit retrofit = builder
-                        .client(
-                                httpClient.build()
-                        )
-                        .build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(httpClient)
+                .build();
 
         return retrofit.create(YandexTranslatorAPI.class);
     }

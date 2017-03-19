@@ -6,4 +6,5 @@ package nikonorov.net.translator.maintranslatorscreen.view;
  */
 
 public interface MainTranslatorView {
+    void showTranslatedResult(String text);
 }

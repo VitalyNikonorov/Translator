@@ -2,6 +2,8 @@
 
     package="nikonorov.net.translator">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".TranslatorApplication"
         android:allowBackup="true"

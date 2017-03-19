@@ -6,4 +6,5 @@ package nikonorov.net.translator.maintranslatorscreen.presenter;
  */
 
 public interface MainTranslatorPresenter {
+    void onTranslateBtnClick(String text);
 }
