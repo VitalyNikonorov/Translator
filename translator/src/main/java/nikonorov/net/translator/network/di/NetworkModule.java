@@ -22,7 +22,7 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    YandexTranslatorAPI getTranslatorApi() {
+    YandexTranslatorAPI provideTranslatorApi() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
