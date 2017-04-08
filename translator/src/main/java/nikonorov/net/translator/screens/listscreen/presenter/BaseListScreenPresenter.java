@@ -1,7 +1,5 @@
 package nikonorov.net.translator.screens.listscreen.presenter;
 
-import android.view.View;
-
 import java.lang.ref.WeakReference;
 
 import nikonorov.net.translator.screens.listscreen.model.ListScreenModel;
@@ -15,8 +13,8 @@ import nikonorov.net.translator.screens.listscreen.view.ListScreenView;
 
 public abstract class BaseListScreenPresenter implements ListScreenPresenter {
 
-    private WeakReference<ListScreenView> view;
-    private ListScreenModel model;
+    protected WeakReference<ListScreenView> view;
+    protected ListScreenModel model;
 
     @Override
     public void setView(ListScreenView view) {

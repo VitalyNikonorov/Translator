@@ -46,9 +46,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.translatedText.setText(dataList.get(position).translatedText);
-        holder.originalText.setText(dataList.get(position).originalText);
-        holder.lang.setText(dataList.get(position).lang);
+        holder.translatedText.setText(dataList.get(position).getTranslatedText());
+        holder.originalText.setText(dataList.get(position).getOriginalText());
+        holder.lang.setText(dataList.get(position).getLang());
     }
 
     @Override

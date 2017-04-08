@@ -2,6 +2,9 @@ package nikonorov.net.translator.data;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.realm.Realm;
@@ -16,21 +19,42 @@ import rx.Observable;
  */
 
 public class Repository {
-    private final Realm realm;
-
     @Inject
     public Repository(Context context) {
         TranslatorApplication.component.inject(this);
         Realm.init(context);
-        realm = Realm.getDefaultInstance();
     }
 
-    public Observable getHistory() {
-        RealmResults<TranslationPair> translations = realm.where(TranslationPair.class).findAll();
-        return translations.asObservable();
+    public Observable<List<TranslationPair>> getHistory() {
+        Realm realm = null;
+        RealmResults<TranslationPair> translations;
+        List<TranslationPair> result = new ArrayList<>();
+        try {
+            realm = Realm.getDefaultInstance();
+            translations = realm.where(TranslationPair.class).findAll();
+            result = realm.copyFromRealm(translations);
+        } finally {
+            if(realm != null) {
+                realm.close();
+            }
+        }
+        return Observable.just(result);
     }
 
-    public void saveTranslation(TranslationPair translation) {
-        realm.copyToRealmOrUpdate(translation);
+    public void saveTranslation(final TranslationPair translation) {
+        Realm realm = null;
+        try {
+            realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.insertOrUpdate(translation);
+                }
+            });
+        } finally {
+            if(realm != null) {
+                realm.close();
+            }
+        }
     }
 }

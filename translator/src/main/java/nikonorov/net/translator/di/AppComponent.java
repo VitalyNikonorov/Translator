@@ -6,6 +6,7 @@ import dagger.Component;
 import nikonorov.net.translator.data.Repository;
 import nikonorov.net.translator.data.di.DataBaseModule;
 import nikonorov.net.translator.network.di.NetworkModule;
+import nikonorov.net.translator.screens.listscreen.model.ListScreenModelImpl;
 import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModelImpl;
 
 /**
@@ -18,5 +19,5 @@ import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslato
 public interface AppComponent {
     void inject(MainTranslatorModelImpl translatorModel);
     void inject(Repository repository);
-    //inject listfragment just one
+    void inject(ListScreenModelImpl listScreenModel);
 }

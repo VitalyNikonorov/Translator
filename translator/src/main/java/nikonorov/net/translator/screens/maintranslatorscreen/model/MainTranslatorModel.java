@@ -11,4 +11,5 @@ import rx.Observable;
 public interface MainTranslatorModel {
 
     Observable<TranslationResult> translate(String text);
+    void saveTranslation(TranslationResult translationResult);
 }

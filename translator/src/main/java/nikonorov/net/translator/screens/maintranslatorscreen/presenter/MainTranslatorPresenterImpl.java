@@ -34,12 +34,13 @@ public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
 
             @Override
             public void onError(Throwable e) {
-
+                e.printStackTrace();
             }
 
             @Override
             public void onNext(TranslationResult translationResult) {
                 view.get().showTranslatedResult(Arrays.toString(translationResult.text));
+                model.saveTranslation(translationResult);
             }
         });
     }
