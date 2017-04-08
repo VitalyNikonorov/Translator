@@ -1,5 +1,9 @@
 package nikonorov.net.translator.screens.maintranslatorscreen.model;
 
+import android.text.TextUtils;
+
+import java.util.Arrays;
+
 import javax.inject.Inject;
 
 import nikonorov.net.translator.TranslatorApplication;
@@ -41,7 +45,7 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
 
     @Override
     public void saveTranslation(TranslationResult translationResult) {
-        TranslationPair translation = new TranslationPair(textForTranslation, translationResult.text.toString(), translationResult.lang);
+        TranslationPair translation = new TranslationPair(textForTranslation, TextUtils.join(", ", translationResult.text), translationResult.lang);
         repository.saveTranslation(translation);
     }
 }
