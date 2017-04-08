@@ -21,11 +21,11 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history_screen);
-        ViewPager viewPager = (ViewPager) findViewById(R.id.history_view_pager);
-        ListFragment[] fragments = new ListFragment[2];
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.history_view_pager);
+        final ListFragment[] fragments = new ListFragment[2];
         fragments[0] = ListFragment.getInstance(new HistoryScreenPresenterImpl());
         fragments[1] = ListFragment.getInstance(new SavedTranslationsPresenterImpl());
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), fragments);
+        final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
     }
 }

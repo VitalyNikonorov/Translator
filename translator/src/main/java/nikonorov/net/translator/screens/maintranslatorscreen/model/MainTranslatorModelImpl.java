@@ -2,12 +2,12 @@ package nikonorov.net.translator.screens.maintranslatorscreen.model;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import nikonorov.net.translator.TranslatorApplication;
 import nikonorov.net.translator.network.YandexTranslatorAPI;
 import nikonorov.net.translator.network.model.TranslationResult;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Vitaly Nikonorov on 18.03.17.

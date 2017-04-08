@@ -1,5 +1,6 @@
 package nikonorov.net.translator.screens.maintranslatorscreen.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import nikonorov.net.translator.R;
+import nikonorov.net.translator.screens.historyscreen.HistoryActivity;
 import nikonorov.net.translator.screens.maintranslatorscreen.presenter.MainTranslatorPresenter;
 import nikonorov.net.translator.screens.maintranslatorscreen.presenter.MainTranslatorPresenterImpl;
 
@@ -30,6 +32,12 @@ public class MainTranslatorActivity extends AppCompatActivity implements MainTra
         translatedTV = (TextView) findViewById(R.id.translated_text);
         translationField = (EditText) findViewById(R.id.translating_text);
         findViewById(R.id.translate_btn).setOnClickListener(this);
+        findViewById(R.id.mock).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainTranslatorActivity.this, HistoryActivity.class));
+            }
+        });
     }
 
     @Override

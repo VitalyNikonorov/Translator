@@ -1,21 +1,18 @@
 package nikonorov.net.translator.screens.listscreen.view;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import nikonorov.net.translator.R;
-import nikonorov.net.translator.TranslatorApplication;
 import nikonorov.net.translator.data.model.TranslationPair;
-import nikonorov.net.translator.screens.listscreen.presenter.BaseListScreenPresenter;
 import nikonorov.net.translator.screens.listscreen.presenter.ListScreenPresenter;
 import nikonorov.net.translator.utils.ThreadUtils;
 
@@ -43,6 +40,12 @@ public class ListFragment extends Fragment implements ListScreenView {
     public void onStart() {
         super.onStart();
         presenter.onStart();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.list_screen, container, false);
     }
 
     @Override

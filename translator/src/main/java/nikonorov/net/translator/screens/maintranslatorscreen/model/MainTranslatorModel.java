@@ -1,7 +1,7 @@
 package nikonorov.net.translator.screens.maintranslatorscreen.model;
 
-import io.reactivex.Observable;
 import nikonorov.net.translator.network.model.TranslationResult;
+import rx.Observable;
 
 /**
  * Created by Vitaly Nikonorov on 18.03.17.

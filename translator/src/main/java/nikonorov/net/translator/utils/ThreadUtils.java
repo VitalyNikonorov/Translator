@@ -11,7 +11,7 @@ import android.support.annotation.Nullable;
 
 public class ThreadUtils {
 
-    @Nullable private static Handler mainThreadHendler;
+    @Nullable private static Handler mainThreadHandler;
 
     public static void executeOnMain(Runnable task) {
         if (Looper.getMainLooper() == Looper.myLooper()) {
@@ -22,13 +22,13 @@ public class ThreadUtils {
     }
 
     public static void addOnMainQueue(Runnable task, long delayMillis) {
-        getMainThreadHendler().postDelayed(task, delayMillis);
+        getMainThreadHandler().postDelayed(task, delayMillis);
     }
 
-    public static Handler getMainThreadHendler(){
-        if (mainThreadHendler == null) {
-            mainThreadHendler = new Handler(Looper.getMainLooper());
+    public static Handler getMainThreadHandler(){
+        if (mainThreadHandler == null) {
+            mainThreadHandler = new Handler(Looper.getMainLooper());
         }
-        return mainThreadHendler;
+        return mainThreadHandler;
     }
 }

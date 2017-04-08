@@ -3,12 +3,11 @@ package nikonorov.net.translator.screens.maintranslatorscreen.presenter;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModel;
 import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModelImpl;
 import nikonorov.net.translator.screens.maintranslatorscreen.view.MainTranslatorView;
 import nikonorov.net.translator.network.model.TranslationResult;
+import rx.Observer;
 
 /**
  * Created by Vitaly Nikonorov on 18.03.17.
@@ -29,23 +28,18 @@ public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
     public void onTranslateBtnClick(String text) {
         model.translate(text).subscribe(new Observer<TranslationResult>() {
             @Override
-            public void onSubscribe(Disposable d) {
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
 
             }
 
             @Override
             public void onNext(TranslationResult translationResult) {
                 view.get().showTranslatedResult(Arrays.toString(translationResult.text));
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onComplete() {
-
             }
         });
     }

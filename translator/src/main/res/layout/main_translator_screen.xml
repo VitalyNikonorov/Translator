@@ -20,5 +20,11 @@
         android:text="translate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/mock"
+        android:layout_below="@id/translate_btn"
+        android:text="mock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>
