@@ -42,9 +42,4 @@ public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
                     }
                 });
     }
-
-    @Override
-    public void onListItemIconClick(int position) {
-
-    }
 }

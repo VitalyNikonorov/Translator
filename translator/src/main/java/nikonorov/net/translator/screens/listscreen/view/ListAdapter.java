@@ -1,9 +1,13 @@
 package nikonorov.net.translator.screens.listscreen.view;
 
+import android.media.Image;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IntegerRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -49,6 +53,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         holder.translatedText.setText(dataList.get(position).getTranslatedText());
         holder.originalText.setText(dataList.get(position).getOriginalText());
         holder.lang.setText(dataList.get(position).getLang());
+        @DrawableRes final int iconRes = dataList.get(position).isBookmark() ? R.drawable.ic_bookmark_selected : R.drawable.ic_bookmark_notselected;
+        holder.icon.setImageResource(iconRes);
     }
 
     @Override
@@ -60,18 +66,18 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         TextView originalText;
         TextView translatedText;
         TextView lang;
-        View icon;
+        ImageView icon;
 
         public ViewHolder(View itemView) {
             super(itemView);
             originalText = (TextView) itemView.findViewById(R.id.original_text);
             translatedText = (TextView) itemView.findViewById(R.id.translated_text);
             lang = (TextView) itemView.findViewById(R.id.lang);
-            icon = itemView.findViewById(R.id.icon);
+            icon = (ImageView) itemView.findViewById(R.id.icon);
             icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    presenter.onListItemIconClick(getAdapterPosition());
+                    presenter.onListItemIconClick(dataList.get(getAdapterPosition()));
                 }
             });
         }

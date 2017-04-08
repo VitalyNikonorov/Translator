@@ -2,6 +2,7 @@ package nikonorov.net.translator.screens.listscreen.presenter;
 
 import java.lang.ref.WeakReference;
 
+import nikonorov.net.translator.data.model.TranslationPair;
 import nikonorov.net.translator.screens.listscreen.model.ListScreenModel;
 import nikonorov.net.translator.screens.listscreen.model.ListScreenModelImpl;
 import nikonorov.net.translator.screens.listscreen.view.ListScreenView;
@@ -23,5 +24,10 @@ public abstract class BaseListScreenPresenter implements ListScreenPresenter {
 
     public BaseListScreenPresenter() {
         model = new ListScreenModelImpl();
+    }
+
+    @Override
+    public void onListItemIconClick(TranslationPair translation) {
+        model.addBookmark(translation);
     }
 }

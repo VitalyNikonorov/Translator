@@ -1,5 +1,6 @@
 package nikonorov.net.translator.screens.listscreen.presenter;
 
+import nikonorov.net.translator.data.model.TranslationPair;
 import nikonorov.net.translator.screens.listscreen.view.ListScreenView;
 
 /**
@@ -11,6 +12,5 @@ public interface ListScreenPresenter {
 
     void setView(ListScreenView view);
     void onStart();
-    void onListItemIconClick(int position);
-
+    void onListItemIconClick(TranslationPair translation);
 }

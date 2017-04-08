@@ -1,12 +1,13 @@
 package nikonorov.net.translator.screens.maintranslatorscreen.presenter;
 
-import java.lang.ref.WeakReference;
-import java.util.Arrays;
+import android.text.TextUtils;
 
+import java.lang.ref.WeakReference;
+
+import nikonorov.net.translator.network.model.TranslationResult;
 import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModel;
 import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModelImpl;
 import nikonorov.net.translator.screens.maintranslatorscreen.view.MainTranslatorView;
-import nikonorov.net.translator.network.model.TranslationResult;
 import rx.Observer;
 
 /**
@@ -39,7 +40,7 @@ public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
 
             @Override
             public void onNext(TranslationResult translationResult) {
-                view.get().showTranslatedResult(Arrays.toString(translationResult.text));
+                view.get().showTranslatedResult(TextUtils.join(", ", translationResult.text));
                 model.saveTranslation(translationResult);
             }
         });

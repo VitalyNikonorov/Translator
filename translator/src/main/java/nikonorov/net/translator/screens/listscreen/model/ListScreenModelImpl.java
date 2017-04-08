@@ -27,4 +27,14 @@ public class ListScreenModelImpl implements ListScreenModel {
     public Observable<List<TranslationPair>> getHistory() {
         return repository.getHistory();
     }
+
+    @Override
+    public Observable<List<TranslationPair>> getBookmarks() {
+        return repository.getBookmarks();
+    }
+
+    @Override
+    public void addBookmark(TranslationPair translation) {
+        repository.addBookmark(translation);
+    }
 }
