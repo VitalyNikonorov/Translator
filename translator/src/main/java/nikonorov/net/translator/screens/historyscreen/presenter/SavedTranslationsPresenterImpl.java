@@ -1,7 +1,5 @@
 package nikonorov.net.translator.screens.historyscreen.presenter;
 
-import android.view.View;
-
 import java.util.List;
 
 import nikonorov.net.translator.data.model.TranslationPair;
@@ -24,7 +22,8 @@ public class SavedTranslationsPresenterImpl extends BaseListScreenPresenter {
 
     @Override
     public void onStart() {
-        model.getBookmarks()
+        prepareSubscription();
+        subscription = model.getBookmarks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<TranslationPair>>() {

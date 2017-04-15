@@ -5,7 +5,9 @@ import java.util.List;
 import nikonorov.net.translator.data.model.TranslationPair;
 import nikonorov.net.translator.screens.listscreen.model.ListScreenModelImpl;
 import nikonorov.net.translator.screens.listscreen.presenter.BaseListScreenPresenter;
+import nikonorov.net.translator.screens.listscreen.view.ListScreenView;
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -22,7 +24,12 @@ public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
 
     @Override
     public void onStart() {
-        model.getHistory()
+        ListScreenView screenView = view.get();
+        if (screenView != null) {
+            screenView.showPreloader();
+        }
+        prepareSubscription();
+        subscription = model.getHistory()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<TranslationPair>>() {
@@ -38,7 +45,14 @@ public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
 
                     @Override
                     public void onNext(List<TranslationPair> translationPairs) {
-                        view.get().showContent(translationPairs);
+                        ListScreenView screenView = view.get();
+                        if (screenView != null) {
+                            if (translationPairs.size() > 0) {
+                                screenView.showContent(translationPairs);
+                            } else {
+                                screenView.showPreloader();
+                            }
+                        }
                     }
                 });
     }

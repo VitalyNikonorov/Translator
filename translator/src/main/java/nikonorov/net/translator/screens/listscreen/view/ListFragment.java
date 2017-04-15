@@ -42,6 +42,12 @@ public class ListFragment extends Fragment implements ListScreenView {
         presenter.onStart();
     }
 
+    @Override
+    public void onStop() {
+        presenter.onStop();
+        super.onStop();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

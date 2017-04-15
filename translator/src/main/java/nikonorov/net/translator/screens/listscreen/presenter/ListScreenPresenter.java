@@ -12,5 +12,6 @@ public interface ListScreenPresenter {
 
     void setView(ListScreenView view);
     void onStart();
+    void onStop();
     void onListItemIconClick(TranslationPair translation);
 }

@@ -7,8 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -42,13 +46,27 @@ public class MainTranslatorActivity extends AppCompatActivity implements
         setContentView(R.layout.main_translator_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
         translatedTV = (TextView) findViewById(R.id.translated_text);
         translationField = (EditText) findViewById(R.id.translating_text);
         findViewById(R.id.translate_btn).setOnClickListener(this);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar ,  R.string.app_name, R.string.app_name) {
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+            }
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+        drawerToggle.syncState();
+        drawer.addDrawerListener(drawerToggle);
     }
 
     @Override
@@ -82,6 +100,19 @@ public class MainTranslatorActivity extends AppCompatActivity implements
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if(drawer.isDrawerOpen(Gravity.START)) {
+                    drawer.closeDrawer(Gravity.START);
+                } else {
+                    drawer.openDrawer(Gravity.START);
+                }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
