@@ -74,6 +74,44 @@ public class Repository {
         }
     }
 
+    public void clearHistory() {
+        Realm realm = null;
+        try {
+            realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<TranslationPair> historyRows = realm.where(TranslationPair.class).equalTo("isBookmark", false).findAll();
+                    historyRows.deleteAllFromRealm();
+                }
+            });
+        } finally {
+            if(realm != null) {
+                realm.close();
+            }
+        }
+    }
+
+    public void clearBookmarks() {
+        Realm realm = null;
+        try {
+            realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<TranslationPair> historyRows = realm.where(TranslationPair.class).equalTo("isBookmark", true).findAll();
+                    for (TranslationPair pair: historyRows) {
+                        pair.setBookmark(false);
+                    }
+                }
+            });
+        } finally {
+            if(realm != null) {
+                realm.close();
+            }
+        }
+    }
+
     public void addBookmark(final TranslationPair translation) {
         Realm realm = null;
         try {
