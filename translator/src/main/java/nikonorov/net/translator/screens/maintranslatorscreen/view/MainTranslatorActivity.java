@@ -67,6 +67,18 @@ public class MainTranslatorActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        presenter.onStop();
+        super.onStop();
+    }
+
+    @Override
     public void showTranslatedResult(String text) {
         translatedTV.setText(text);
     }

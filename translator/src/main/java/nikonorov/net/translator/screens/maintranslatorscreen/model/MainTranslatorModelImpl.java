@@ -10,6 +10,7 @@ import nikonorov.net.translator.TranslatorApplication;
 import nikonorov.net.translator.data.Repository;
 import nikonorov.net.translator.data.model.TranslationPair;
 import nikonorov.net.translator.network.YandexTranslatorAPI;
+import nikonorov.net.translator.network.model.GetLangsResult;
 import nikonorov.net.translator.network.model.TranslationResult;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -41,6 +42,11 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
                 .translate(key, text, lang)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<GetLangsResult> getLangs(String locale) {
+        return translatorAPI.getLangs(key, locale);
     }
 
     @Override

@@ -2,15 +2,23 @@ package nikonorov.net.translator.screens.maintranslatorscreen.presenter;
 
 import android.support.annotation.IdRes;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.lang.ref.WeakReference;
+import java.util.Locale;
 
 import nikonorov.net.translator.R;
+import nikonorov.net.translator.network.model.GetLangsResult;
 import nikonorov.net.translator.network.model.TranslationResult;
 import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModel;
 import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModelImpl;
 import nikonorov.net.translator.screens.maintranslatorscreen.view.MainTranslatorView;
 import rx.Observer;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.Subscriptions;
 
 /**
  * Created by Vitaly Nikonorov on 18.03.17.
@@ -21,6 +29,8 @@ public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
 
     private final MainTranslatorModel model;
     private WeakReference<MainTranslatorView> viewRefference;
+    private Subscription translationSubscription = Subscriptions.empty();
+    private Subscription getLangsSubscription = Subscriptions.empty();
 
     public MainTranslatorPresenterImpl(MainTranslatorView view) {
         this.model = new MainTranslatorModelImpl();
@@ -29,7 +39,8 @@ public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
 
     @Override
     public void onTranslateBtnClick(String text) {
-        model.translate(text).subscribe(new Observer<TranslationResult>() {
+        prepareSubscription(translationSubscription);
+        translationSubscription = model.translate(text).subscribe(new Observer<TranslationResult>() {
             @Override
             public void onCompleted() {
 
@@ -68,6 +79,44 @@ public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onStart() {
+        String locale = Locale.getDefault().getLanguage();
+        prepareSubscription(getLangsSubscription);
+        getLangsSubscription = model
+                .getLangs(locale)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<GetLangsResult>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(GetLangsResult getLangsResult) {
+                Log.i("get Langs", getLangsResult.toString());
+            }
+        });
+    }
+
+    @Override
+    public void onStop() {
+        prepareSubscription(getLangsSubscription);
+        prepareSubscription(translationSubscription);
+    }
+
+    protected void prepareSubscription(Subscription subscription) {
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
         }
     }
 }

@@ -10,4 +10,6 @@ import android.support.annotation.IdRes;
 public interface MainTranslatorPresenter {
     void onTranslateBtnClick(String text);
     void onNavigationItemClick(@IdRes int id);
+    void onStart();
+    void onStop();
 }
