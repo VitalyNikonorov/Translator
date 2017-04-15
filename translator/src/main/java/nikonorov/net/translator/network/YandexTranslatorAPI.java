@@ -1,5 +1,6 @@
 package nikonorov.net.translator.network;
 
+import nikonorov.net.translator.network.model.GetLangsResult;
 import nikonorov.net.translator.network.model.TranslationResult;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -17,5 +18,11 @@ public interface YandexTranslatorAPI {
             @Query("key") String key,
             @Query("text") String text,
             @Query("lang") String lang
+    );
+
+    @GET("getLangs")
+    Observable<GetLangsResult> getLangs(
+            @Query("key") String key,
+            @Query("ui") String ui
     );
 }
