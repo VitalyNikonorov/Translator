@@ -12,6 +12,7 @@
     <EditText
         android:id="@+id/translating_text"
         android:layout_width="match_parent"
+        android:layout_below="@id/toolbar"
         android:layout_height="300dp" />
 
     <TextView
