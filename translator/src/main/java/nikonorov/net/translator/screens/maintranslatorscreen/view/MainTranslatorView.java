@@ -8,4 +8,5 @@ package nikonorov.net.translator.screens.maintranslatorscreen.view;
 public interface MainTranslatorView {
     void showTranslatedResult(String text);
     void startHistoryScreen();
+    void startInfoScreen();
 }

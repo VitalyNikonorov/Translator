@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import nikonorov.net.translator.R;
 import nikonorov.net.translator.screens.historyscreen.HistoryActivity;
+import nikonorov.net.translator.screens.infoscreen.InfoActivity;
 import nikonorov.net.translator.screens.maintranslatorscreen.presenter.MainTranslatorPresenter;
 import nikonorov.net.translator.screens.maintranslatorscreen.presenter.MainTranslatorPresenterImpl;
 
@@ -58,6 +59,11 @@ public class MainTranslatorActivity extends AppCompatActivity implements
     @Override
     public void startHistoryScreen() {
         startActivity(new Intent(MainTranslatorActivity.this, HistoryActivity.class));
+    }
+
+    @Override
+    public void startInfoScreen() {
+        startActivity(new Intent(MainTranslatorActivity.this, InfoActivity.class));
     }
 
     @Override

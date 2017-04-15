@@ -10,4 +10,5 @@
     <string name="nav_drawer_menu_main">Главный экран</string>
     <string name="nav_drawer_menu_history">История</string>
     <string name="nav_drawer_menu_about">О приложении</string>
+    <string name="info_version">Версия приложения</string>
 </resources>

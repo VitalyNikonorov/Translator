@@ -53,16 +53,18 @@ public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
 
     @Override
     public void onNavigationItemClick(@IdRes int id) {
+        MainTranslatorView view = viewRefference.get();
+        if (view == null) {
+            return;
+        }
         switch (id) {
             case R.id.nav_main_screen:
                 break;
             case R.id.nav_history:
-                MainTranslatorView view = viewRefference.get();
-                if (view != null) {
-                    view.startHistoryScreen();
-                }
+                view.startHistoryScreen();
                 break;
-            case R.id.nav_about:
+            case R.id.nav_info:
+                view.startInfoScreen();
                 break;
             default:
                 break;
