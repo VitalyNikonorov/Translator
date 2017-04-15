@@ -11,4 +11,6 @@
     <string name="nav_drawer_menu_history">История</string>
     <string name="nav_drawer_menu_about">О приложении</string>
     <string name="info_version">Версия приложения</string>
+    <string name="tab_caption_history">История</string>
+    <string name="tab_caption_bookmarks">Избранное</string>
 </resources>
