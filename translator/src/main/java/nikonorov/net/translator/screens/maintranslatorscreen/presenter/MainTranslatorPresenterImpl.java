@@ -1,9 +1,11 @@
 package nikonorov.net.translator.screens.maintranslatorscreen.presenter;
 
+import android.support.annotation.IdRes;
 import android.text.TextUtils;
 
 import java.lang.ref.WeakReference;
 
+import nikonorov.net.translator.R;
 import nikonorov.net.translator.network.model.TranslationResult;
 import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModel;
 import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModelImpl;
@@ -18,11 +20,11 @@ import rx.Observer;
 public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
 
     private final MainTranslatorModel model;
-    private WeakReference<MainTranslatorView> view;
+    private WeakReference<MainTranslatorView> viewRefference;
 
     public MainTranslatorPresenterImpl(MainTranslatorView view) {
         this.model = new MainTranslatorModelImpl();
-        this.view = new WeakReference<>(view);
+        this.viewRefference = new WeakReference<>(view);
     }
 
     @Override
@@ -40,9 +42,30 @@ public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
 
             @Override
             public void onNext(TranslationResult translationResult) {
-                view.get().showTranslatedResult(TextUtils.join(", ", translationResult.text));
-                model.saveTranslation(translationResult);
+                MainTranslatorView view = viewRefference.get();
+                if (view != null) {
+                    view.showTranslatedResult(TextUtils.join(", ", translationResult.text));
+                    model.saveTranslation(translationResult);
+                }
             }
         });
+    }
+
+    @Override
+    public void onNavigationItemClick(@IdRes int id) {
+        switch (id) {
+            case R.id.nav_main_screen:
+                break;
+            case R.id.nav_history:
+                MainTranslatorView view = viewRefference.get();
+                if (view != null) {
+                    view.startHistoryScreen();
+                }
+                break;
+            case R.id.nav_about:
+                break;
+            default:
+                break;
+        }
     }
 }
