@@ -43,4 +43,9 @@ public class SavedTranslationsPresenterImpl extends BaseListScreenPresenter {
                     }
                 });
     }
+
+    @Override
+    public void onDeleteBtnClick() {
+        model.clearBookmarks();
+    }
 }

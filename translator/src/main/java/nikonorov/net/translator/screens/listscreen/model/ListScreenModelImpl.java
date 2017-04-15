@@ -37,4 +37,14 @@ public class ListScreenModelImpl implements ListScreenModel {
     public void addBookmark(TranslationPair translation) {
         repository.addBookmark(translation);
     }
+
+    @Override
+    public void clearHistory() {
+        repository.clearHistory();
+    }
+
+    @Override
+    public void clearBookmarks() {
+        repository.clearBookmarks();
+    }
 }

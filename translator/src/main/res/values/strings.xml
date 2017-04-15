@@ -13,4 +13,5 @@
     <string name="info_version">Версия приложения</string>
     <string name="tab_caption_history">История</string>
     <string name="tab_caption_bookmarks">Избранное</string>
+    <string name="action_delete">Очистить</string>
 </resources>

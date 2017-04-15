@@ -56,4 +56,9 @@ public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
                     }
                 });
     }
+
+    @Override
+    public void onDeleteBtnClick() {
+        model.clearHistory();
+    }
 }

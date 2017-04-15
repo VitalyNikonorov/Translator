@@ -14,4 +14,5 @@ public interface ListScreenPresenter {
     void onStart();
     void onStop();
     void onListItemIconClick(TranslationPair translation);
+    void onDeleteBtnClick();
 }
