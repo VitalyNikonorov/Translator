@@ -1,8 +1,6 @@
 package nikonorov.net.translator.screens.listscreen.view;
 
-import android.media.Image;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.IntegerRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,9 +48,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.translatedText.setText(dataList.get(position).getTranslatedText());
-        holder.originalText.setText(dataList.get(position).getOriginalText());
-        holder.lang.setText(dataList.get(position).getLang());
+        holder.translatedText.setText(dataList.get(position).translatedText);
+        holder.originalText.setText(dataList.get(position).originalText);
+        holder.lang.setText(dataList.get(position).lang);
         @DrawableRes final int iconRes = dataList.get(position).isBookmark() ? R.drawable.ic_bookmark_selected : R.drawable.ic_bookmark_notselected;
         holder.icon.setImageResource(iconRes);
     }
