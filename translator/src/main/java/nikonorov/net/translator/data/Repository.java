@@ -8,13 +8,25 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
+import nikonorov.net.translator.R;
 import nikonorov.net.translator.TranslatorApplication;
+import nikonorov.net.translator.data.model.Language;
 import nikonorov.net.translator.data.model.TranslationPair;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -42,6 +54,7 @@ public class Repository {
             @Override
             public void onCreate(SQLiteDatabase db) {
                 db.execSQL(DBHelper.DB_CREATE_HISTORY);
+                db.execSQL(DBHelper.DB_CREATE_LANGUAGES);
             }
 
             @Override
@@ -54,12 +67,14 @@ public class Repository {
             @Override
             public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
                 db.execSQL("DROP TABLE IF EXISTS " + DBHelper.HISTORY_TABLE + ";");
+                db.execSQL("DROP TABLE IF EXISTS " + DBHelper.LANGUAGES_TABLE + ";");
                 onCreate(db);
             }
 
             @Override
             public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
                 db.execSQL("DROP TABLE IF EXISTS " + DBHelper.HISTORY_TABLE + ";");
+                db.execSQL("DROP TABLE IF EXISTS " + DBHelper.LANGUAGES_TABLE + ";");
                 onCreate(db);
             }
         };
@@ -142,6 +157,19 @@ public class Repository {
                 .subscribe();
     }
 
+    public void saveLanguage(final Language language) {
+        Observable.just(language)
+                .map(new Func1<Language, Void>() {
+                    @Override
+                    public Void call(Language language) {
+                        db.insert(DBHelper.LANGUAGES_TABLE, language.getCV());
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+    }
+
     public void clearHistory() {
         getHistory().map(new Func1<List<TranslationPair>, Void>() {
             @Override
@@ -180,5 +208,31 @@ public class Repository {
                 return null;
             }
         });
+    }
+
+    public Observable<List<Language>> getLanguages(final String locale) {
+        Observable<List<Language>> observable = Observable.just(
+                db.query(String.format("SELECT * FROM %s WHERE %s='%s'", DBHelper.LANGUAGES_TABLE, DBHelper.LOCALE, locale)))
+                .map(new Func1<Cursor, List<Language>>() {
+                    @Override
+                    public List<Language> call(Cursor cursor) {
+                        List<Language> languages = new ArrayList<>();
+                        while (cursor.moveToNext()) {
+                            String description = cursor.getString(1);
+                            String symbol = cursor.getString(2);
+                            String loc = cursor.getString(3);
+                            Language language = new Language(
+                                    description,
+                                    symbol,
+                                    loc
+                            );
+                            languages.add(language);
+                        }
+                        return languages;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        return observable;
     }
 }

@@ -28,9 +28,25 @@ public class DBHelper {
                     ORIGINAL_TEXT,
                     TRANSLATED_TEXT,
                     LANGUAGE_DIRECTION,
-                    IS_BOOKMARK,
                     IS_HISTORY,
+                    IS_BOOKMARK,
                     ORIGINAL_TEXT,
                     TRANSLATED_TEXT,
                     LANGUAGE_DIRECTION);
+
+    public final static String LANGUAGES_TABLE = "languages";
+    public final static String DESCRIPTION = "description";
+    public final static String SYMBOL = "symbol";
+    public final static String LOCALE = "locale";
+
+    public static final String DB_CREATE_LANGUAGES =
+            String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT, %s TEXT, %s TEXT, UNIQUE(%s, %s, %s) ON CONFLICT REPLACE);",
+                    LANGUAGES_TABLE,
+                    _ID,
+                    DESCRIPTION,
+                    SYMBOL,
+                    LOCALE,
+                    DESCRIPTION,
+                    SYMBOL,
+                    LOCALE);
 }

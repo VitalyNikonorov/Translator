@@ -2,18 +2,23 @@ package nikonorov.net.translator.screens.maintranslatorscreen.model;
 
 import android.text.TextUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import nikonorov.net.translator.TranslatorApplication;
 import nikonorov.net.translator.data.Repository;
+import nikonorov.net.translator.data.model.Language;
 import nikonorov.net.translator.data.model.TranslationPair;
 import nikonorov.net.translator.network.YandexTranslatorAPI;
 import nikonorov.net.translator.network.model.GetLangsResult;
 import nikonorov.net.translator.network.model.TranslationResult;
 import rx.Observable;
+import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -45,8 +50,38 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     }
 
     @Override
-    public Observable<GetLangsResult> getLangs(String locale) {
-        return translatorAPI.getLangs(key, locale);
+    public Observable<List<Language>> getLangs(String locale) {
+        Observable<List<Language>> observable = Observable
+                .concat(getLangsFromDB(locale), getLangsFromAPI(locale))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        return observable;
+    }
+
+    private Observable<List<Language>> getLangsFromDB(String locale) {
+        Observable<List<Language>> observable = repository.getLanguages(locale)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        return observable;
+    }
+
+    private Observable<List<Language>> getLangsFromAPI(final String locale) {
+        Observable<List<Language>> observable = translatorAPI
+                .getLangs(key, locale)
+                .map(new Func1<GetLangsResult, List<Language>>() {
+                    @Override
+                    public List<Language> call(GetLangsResult getLangsResult) {
+                        List<Language> languages = new ArrayList<>();
+                        for (String lang : getLangsResult.langs.keySet()) {
+                            Language language = new Language(getLangsResult.langs.get(lang), lang, locale);
+                            repository.saveLanguage(language);
+                            languages.add(language);
+                        }
+                        return languages;
+                    }
+                })
+                .subscribeOn(Schedulers.io());
+        return observable;
     }
 
     @Override
