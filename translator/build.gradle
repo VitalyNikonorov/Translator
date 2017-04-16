@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
@@ -27,9 +26,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-
-
-
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
@@ -41,6 +37,7 @@ dependencies {
     compile 'com.google.dagger:dagger:2.8'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.squareup.sqlbrite:sqlbrite:0.7.0'
     testCompile 'junit:junit:4.12'
     apt 'com.google.dagger:dagger-compiler:2.8'
 }
