@@ -54,4 +54,14 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
         TranslationPair translation = new TranslationPair(textForTranslation, TextUtils.join(", ", translationResult.text), translationResult.lang);
         repository.saveTranslation(translation);
     }
+
+    @Override
+    public void handleError(TranslationResult result) {
+        //TODO send msg about error
+    }
+
+    @Override
+    public void handleError(Throwable error) {
+        //TODO send msd about error
+    }
 }

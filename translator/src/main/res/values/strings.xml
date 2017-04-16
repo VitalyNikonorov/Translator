@@ -14,4 +14,12 @@
     <string name="tab_caption_history">История</string>
     <string name="tab_caption_bookmarks">Избранное</string>
     <string name="action_delete">Очистить</string>
+    <string name="error_caption">Ошибка</string>
+    <string name="action_retry">Повторить</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="internal_error_msg">Произошла ошибка в работе приложения. Команда разработки проинформирована и уже работает над ее исправлением. Благодарим за пользование нашим ресурсом и хорошего вам дня.</string>
+    <string name="error_msg_limit_exceeded">На данный момент достигнут лимит переведеенного текста. Пожалуйста, повторите попытку позднее.</string>
+    <string name="error_length_limit_exceeded">Превышен максимально допустимый размер теста. Сократите текст или переведите частями</string>
+    <string name="error_cant_translate">Текст не может быт переведен</string>
+    <string name="error_direction_not_support">Заданное направление перевода не поддерживается</string>
 </resources>

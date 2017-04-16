@@ -14,4 +14,6 @@ public interface MainTranslatorModel {
     Observable<TranslationResult> translate(String text);
     Observable<GetLangsResult> getLangs(String locale);
     void saveTranslation(TranslationResult translationResult);
+    void handleError(TranslationResult result);
+    void handleError(Throwable error);
 }

@@ -1,23 +1,24 @@
 package nikonorov.net.translator.screens.maintranslatorscreen.view;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import nikonorov.net.translator.R;
 import nikonorov.net.translator.screens.historyscreen.HistoryActivity;
@@ -38,7 +39,7 @@ public class MainTranslatorActivity extends AppCompatActivity implements
     private TextView translatedTV;
     private EditText translationField;
     private MainTranslatorPresenter presenter;
-    private DrawerLayout drawer;
+    private DrawerLayout rootDrawerLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,8 +53,8 @@ public class MainTranslatorActivity extends AppCompatActivity implements
         findViewById(R.id.translate_btn).setOnClickListener(this);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar ,  R.string.app_name, R.string.app_name) {
+        rootDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, rootDrawerLayout, toolbar ,  R.string.app_name, R.string.app_name) {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
             }
@@ -61,7 +62,7 @@ public class MainTranslatorActivity extends AppCompatActivity implements
                 super.onDrawerOpened(drawerView);
             }
         };
-        drawer.addDrawerListener(drawerToggle);
+        rootDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.setToolbarNavigationClickListener(this);
         drawerToggle.syncState();
     }
@@ -94,6 +95,35 @@ public class MainTranslatorActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void showError(String msg) {
+        showToast(msg);
+    }
+
+    @Override
+    public void showError(@StringRes int msgId) {
+        showToast(getString(msgId));
+    }
+
+    @Override
+    public void showRetryError(@StringRes int msgId) {
+        new AlertDialog.Builder(this)
+                .setMessage(msgId)
+                .setTitle(R.string.error_caption)
+                .setPositiveButton(R.string.action_retry, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            presenter.onRetryClick();
+                        }
+                })
+                .setNegativeButton(R.string.action_cancel, null)
+                .create()
+                .show();
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.translate_btn:
@@ -104,8 +134,8 @@ public class MainTranslatorActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (rootDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            rootDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -114,7 +144,7 @@ public class MainTranslatorActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         presenter.onNavigationItemClick(item.getItemId());
-        drawer.closeDrawer(GravityCompat.START);
+        rootDrawerLayout.closeDrawer(GravityCompat.START);
         return false;
     }
 }

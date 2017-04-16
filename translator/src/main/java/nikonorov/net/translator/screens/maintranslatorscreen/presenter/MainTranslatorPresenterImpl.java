@@ -28,13 +28,13 @@ import rx.subscriptions.Subscriptions;
 public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
 
     private final MainTranslatorModel model;
-    private WeakReference<MainTranslatorView> viewRefference;
+    private WeakReference<MainTranslatorView> viewReference;
     private Subscription translationSubscription = Subscriptions.empty();
     private Subscription getLangsSubscription = Subscriptions.empty();
 
     public MainTranslatorPresenterImpl(MainTranslatorView view) {
         this.model = new MainTranslatorModelImpl();
-        this.viewRefference = new WeakReference<>(view);
+        this.viewReference = new WeakReference<>(view);
     }
 
     @Override
@@ -48,15 +48,55 @@ public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
 
             @Override
             public void onError(Throwable e) {
+                model.handleError(e);
+                MainTranslatorView view = viewReference.get();
+                if (view != null) {
+                    view.showError(R.string.internal_error_msg);
+                }
                 e.printStackTrace();
             }
 
             @Override
             public void onNext(TranslationResult translationResult) {
-                MainTranslatorView view = viewRefference.get();
-                if (view != null) {
-                    view.showTranslatedResult(TextUtils.join(", ", translationResult.text));
-                    model.saveTranslation(translationResult);
+                MainTranslatorView view = viewReference.get();
+                switch (translationResult.code) {
+                    case 200:
+                        if (view != null) {
+                            view.showTranslatedResult(TextUtils.join(", ", translationResult.text));
+                        }
+                        model.saveTranslation(translationResult);
+                        break;
+                    case 401:
+                    case 402:
+                        model.handleError(translationResult);
+                        if (view != null) {
+                            view.showError(R.string.internal_error_msg);
+                        }
+                        break;
+                    case 404:
+                        model.handleError(translationResult);
+                        if (view != null) {
+                            view.showRetryError(R.string.error_msg_limit_exceeded);
+                        }
+                        break;
+                    case 413:
+                        if (view != null) {
+                            view.showError(R.string.error_length_limit_exceeded);
+                        }
+                        break;
+                    case 422:
+                        if (view != null) {
+                            view.showError(R.string.error_cant_translate);
+                        }
+                        break;
+                    case 501:
+                        if (view != null) {
+                            view.showError(R.string.error_cant_translate);
+                        }
+                        break;
+                    default:
+                        model.handleError(translationResult);
+                        break;
                 }
             }
         });
@@ -64,7 +104,7 @@ public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
 
     @Override
     public void onNavigationItemClick(@IdRes int id) {
-        MainTranslatorView view = viewRefference.get();
+        MainTranslatorView view = viewReference.get();
         if (view == null) {
             return;
         }
@@ -112,6 +152,11 @@ public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
     public void onStop() {
         prepareSubscription(getLangsSubscription);
         prepareSubscription(translationSubscription);
+    }
+
+    @Override
+    public void onRetryClick() {
+        //TODO retry call
     }
 
     protected void prepareSubscription(Subscription subscription) {

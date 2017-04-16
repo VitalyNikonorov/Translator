@@ -12,4 +12,5 @@ public interface MainTranslatorPresenter {
     void onNavigationItemClick(@IdRes int id);
     void onStart();
     void onStop();
+    void onRetryClick();
 }
