@@ -1,5 +1,8 @@
 package nikonorov.net.translator.screens.maintranslatorscreen.model;
 
+import java.util.List;
+
+import nikonorov.net.translator.data.model.Language;
 import nikonorov.net.translator.network.model.GetLangsResult;
 import nikonorov.net.translator.network.model.TranslationResult;
 import rx.Observable;
@@ -12,7 +15,7 @@ import rx.Observable;
 public interface MainTranslatorModel {
 
     Observable<TranslationResult> translate(String text);
-    Observable<GetLangsResult> getLangs(String locale);
+    Observable<List<Language>> getLangs(String locale);
     void saveTranslation(TranslationResult translationResult);
     void handleError(TranslationResult result);
     void handleError(Throwable error);

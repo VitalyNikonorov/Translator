@@ -2,18 +2,23 @@ package nikonorov.net.translator.screens.maintranslatorscreen.model;
 
 import android.text.TextUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import nikonorov.net.translator.TranslatorApplication;
 import nikonorov.net.translator.data.Repository;
+import nikonorov.net.translator.data.model.Language;
 import nikonorov.net.translator.data.model.TranslationPair;
 import nikonorov.net.translator.network.YandexTranslatorAPI;
 import nikonorov.net.translator.network.model.GetLangsResult;
 import nikonorov.net.translator.network.model.TranslationResult;
 import rx.Observable;
+import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -45,8 +50,41 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     }
 
     @Override
-    public Observable<GetLangsResult> getLangs(String locale) {
-        return translatorAPI.getLangs(key, locale);
+    public Observable<List<Language>> getLangs(String locale) {
+        repository.getLangs()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Language>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Language> languages) {
+                        if (languages.size() == 0) {
+                            repository.initLangs();
+                        }
+                    }
+                });
+
+        return translatorAPI
+                .getLangs(key, locale)
+                .map(new Func1<GetLangsResult, List<Language>>() {
+                    @Override
+                    public List<Language> call(GetLangsResult getLangsResult) {
+                        List<Language> languages = new ArrayList<>();
+                        for (String lang: getLangsResult.langs.keySet()) {
+                            languages.add(new Language(getLangsResult.langs.get(lang), lang));
+                        }
+                        return languages;
+                    }
+                });
     }
 
     @Override

@@ -5,9 +5,11 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 import java.util.Locale;
 
 import nikonorov.net.translator.R;
+import nikonorov.net.translator.data.model.Language;
 import nikonorov.net.translator.network.model.GetLangsResult;
 import nikonorov.net.translator.network.model.TranslationResult;
 import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModel;
@@ -130,7 +132,7 @@ public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
                 .getLangs(locale)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<GetLangsResult>() {
+                .subscribe(new Subscriber<List<Language>>() {
             @Override
             public void onCompleted() {
 
@@ -142,8 +144,8 @@ public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
             }
 
             @Override
-            public void onNext(GetLangsResult getLangsResult) {
-                Log.i("get Langs", getLangsResult.toString());
+            public void onNext(List<Language> langs) {
+
             }
         });
     }
