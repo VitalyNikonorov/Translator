@@ -1,17 +1,25 @@
 package nikonorov.net.translator.data;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite.SqlBrite;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
 import nikonorov.net.translator.TranslatorApplication;
 import nikonorov.net.translator.data.model.TranslationPair;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Vitaly Nikonorov on 08.04.17.
@@ -19,118 +27,158 @@ import rx.Observable;
  */
 
 public class Repository {
+
+    private BriteDatabase db;
+
     @Inject
     public Repository(Context context) {
         TranslatorApplication.component.inject(this);
-        Realm.init(context);
+        /**
+         * Creating DB connection
+         */
+
+        SqlBrite sqlBrite = SqlBrite.create();
+        SQLiteOpenHelper dbHelper = new SQLiteOpenHelper(context, DBHelper.DB_NAME, null, DBHelper.DB_VERSION) {
+            @Override
+            public void onCreate(SQLiteDatabase db) {
+                db.execSQL(DBHelper.DB_CREATE_HISTORY);
+            }
+
+            @Override
+            public void onOpen(SQLiteDatabase db) {
+//                db.execSQL("DROP TABLE IF EXISTS " + DBHelper.HISTORY_TABLE + ";");
+//                onCreate(db);
+                super.onOpen(db);
+            }
+
+            @Override
+            public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+                db.execSQL("DROP TABLE IF EXISTS " + DBHelper.HISTORY_TABLE + ";");
+                onCreate(db);
+            }
+
+            @Override
+            public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+                db.execSQL("DROP TABLE IF EXISTS " + DBHelper.HISTORY_TABLE + ";");
+                onCreate(db);
+            }
+        };
+        db = sqlBrite.wrapDatabaseHelper(dbHelper, Schedulers.io());
     }
 
     public Observable<List<TranslationPair>> getHistory() {
-        Realm realm = null;
-        RealmResults<TranslationPair> translations;
-        List<TranslationPair> result = new ArrayList<>();
-        try {
-            realm = Realm.getDefaultInstance();
-            translations = realm.where(TranslationPair.class).findAll();
-            result = realm.copyFromRealm(translations);
-        } finally {
-            if(realm != null) {
-                realm.close();
-            }
-        }
-        return Observable.just(result);
+        Observable<List<TranslationPair>> observable = Observable.just(
+                db.query(String.format("SELECT * FROM %s WHERE %s=%d", DBHelper.HISTORY_TABLE, DBHelper.IS_HISTORY, DBHelper.TRUE)))
+                .map(new Func1<Cursor, List<TranslationPair>>() {
+                    @Override
+                    public List<TranslationPair> call(Cursor cursor) {
+                        List<TranslationPair> translations = new ArrayList<>();
+                        while (cursor.moveToNext()) {
+                            String originalText = cursor.getString(1);
+                            String translatedText = cursor.getString(2);
+                            String language = cursor.getString(3);
+                            boolean isHistory = cursor.getInt(4) == DBHelper.TRUE;
+                            boolean isBookmark = cursor.getInt(5) == DBHelper.TRUE;
+
+                            TranslationPair translation = new TranslationPair(
+                                    originalText,
+                                    translatedText,
+                                    language,
+                                    isHistory,
+                                    isBookmark
+                            );
+                            translations.add(translation);
+                        }
+                        return translations;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        return observable;
     }
 
     public Observable<List<TranslationPair>> getBookmarks() {
-        Realm realm = null;
-        RealmResults<TranslationPair> translations;
-        List<TranslationPair> result = new ArrayList<>();
-        try {
-            realm = Realm.getDefaultInstance();
-            translations = realm.where(TranslationPair.class).equalTo("isBookmark", true).findAll();
-            result = realm.copyFromRealm(translations);
-        } finally {
-            if(realm != null) {
-                realm.close();
-            }
-        }
-        return Observable.just(result);
+        Observable<List<TranslationPair>> observable = Observable.just(
+                db.query(String.format("SELECT * FROM %s WHERE %s=%d", DBHelper.HISTORY_TABLE, DBHelper.IS_BOOKMARK, DBHelper.TRUE)))
+                .map(new Func1<Cursor, List<TranslationPair>>() {
+                    @Override
+                    public List<TranslationPair> call(Cursor cursor) {
+                        List<TranslationPair> translations = new ArrayList<>();
+                        while (cursor.moveToNext()) {
+                            String originalText = cursor.getString(1);
+                            String translatedText = cursor.getString(2);
+                            String language = cursor.getString(3);
+                            boolean isHistory = cursor.getInt(4) == DBHelper.TRUE;
+                            boolean isBookmark = cursor.getInt(5) == DBHelper.TRUE;
+
+                            TranslationPair translation = new TranslationPair(
+                                    originalText,
+                                    translatedText,
+                                    language,
+                                    isHistory,
+                                    isBookmark
+                            );
+                            translations.add(translation);
+                        }
+                        return translations;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        return observable;
     }
 
     public void saveTranslation(final TranslationPair translation) {
-        Realm realm = null;
-        try {
-            realm = Realm.getDefaultInstance();
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    realm.insertOrUpdate(translation);
-                }
-            });
-        } finally {
-            if(realm != null) {
-                realm.close();
-            }
-        }
+        Observable.just(translation)
+                .map(new Func1<TranslationPair, Void>() {
+                    @Override
+                    public Void call(TranslationPair translation) {
+                        db.insert(DBHelper.HISTORY_TABLE, translation.getCV());
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     public void clearHistory() {
-        Realm realm = null;
-        try {
-            realm = Realm.getDefaultInstance();
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    RealmResults<TranslationPair> historyRows = realm.where(TranslationPair.class).equalTo("isBookmark", false).findAll();
-                    historyRows.deleteAllFromRealm();
+        getHistory().map(new Func1<List<TranslationPair>, Void>() {
+            @Override
+            public Void call(List<TranslationPair> translationPairs) {
+                for (TranslationPair translation : translationPairs) {
+                    if (translation.isBookmark()) {
+                        translation.setHistory(false);
+                        db.update(DBHelper.HISTORY_TABLE, translation.getCV(), null);
+                    } else {
+                        db.delete(DBHelper.HISTORY_TABLE,
+                                String.format("%s = \'%s\'", DBHelper.ORIGINAL_TEXT, translation.originalText),
+                                String.format("%s = \'%s\'", DBHelper.TRANSLATED_TEXT, translation.translatedText),
+                                String.format("%s = \'%s\'", DBHelper.LANGUAGE_DIRECTION, translation.lang));
+                    }
                 }
-            });
-        } finally {
-            if(realm != null) {
-                realm.close();
+                return null;
             }
-        }
+        });
     }
 
     public void clearBookmarks() {
-        Realm realm = null;
-        try {
-            realm = Realm.getDefaultInstance();
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    RealmResults<TranslationPair> historyRows = realm.where(TranslationPair.class).equalTo("isBookmark", true).findAll();
-                    for (TranslationPair pair: historyRows) {
-                        pair.setBookmark(false);
+        getBookmarks().map(new Func1<List<TranslationPair>, Void>() {
+            @Override
+            public Void call(List<TranslationPair> translationPairs) {
+                for (TranslationPair translation : translationPairs) {
+                    if (translation.isHistory()) {
+                        translation.setBookmark(false);
+                        db.update(DBHelper.HISTORY_TABLE, translation.getCV(), null);
+                    } else {
+                        db.delete(DBHelper.HISTORY_TABLE,
+                                String.format("%s = \'%s\'", DBHelper.ORIGINAL_TEXT, translation.originalText),
+                                String.format("%s = \'%s\'", DBHelper.TRANSLATED_TEXT, translation.translatedText),
+                                String.format("%s = \'%s\'", DBHelper.LANGUAGE_DIRECTION, translation.lang));
                     }
                 }
-            });
-        } finally {
-            if(realm != null) {
-                realm.close();
+                return null;
             }
-        }
-    }
-
-    public void addBookmark(final TranslationPair translation) {
-        Realm realm = null;
-        try {
-            realm = Realm.getDefaultInstance();
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    TranslationPair savedTranslation = realm.where(TranslationPair.class)
-                            .equalTo("originalText", translation.getOriginalText())
-                            .equalTo("translatedText", translation.getTranslatedText())
-                            .equalTo("lang", translation.getLang())
-                            .findFirst();
-                    savedTranslation.setBookmark(!translation.isBookmark());
-                }
-            });
-        } finally {
-            if(realm != null) {
-                realm.close();
-            }
-        }
+        });
     }
 }

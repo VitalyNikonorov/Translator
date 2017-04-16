@@ -1,63 +1,57 @@
 package nikonorov.net.translator.data.model;
 
-import io.realm.RealmObject;
-import io.realm.annotations.RealmClass;
+
+import android.content.ContentValues;
+
+import nikonorov.net.translator.data.DBHelper;
 
 /**
  * Created by Vitaly Nikonorov on 19.03.17.
  * email@nikonorov.net
  */
-@RealmClass
-public class TranslationPair extends RealmObject {
+public class TranslationPair {
 
-    private String originalText;
-    private String translatedText;
-    private String lang;
+    public final String originalText;
+    public final String translatedText;
+    public final String lang;
     private boolean isBookmark;
-
-    public TranslationPair() {
-    }
+    private boolean isHistory;
 
     public TranslationPair(String originalText, String translatedText, String lang) {
-        this(originalText, translatedText, lang, false);
+        this(originalText, translatedText, lang, true, false);
     }
 
-    public TranslationPair(String originalText, String translatedText, String lang, boolean isBookmark) {
+    public TranslationPair(String originalText, String translatedText, String lang, boolean isHistory, boolean isBookmark) {
         this.originalText = originalText;
         this.translatedText = translatedText;
         this.lang = lang;
+        this.isHistory = isHistory;
         this.isBookmark = isBookmark;
     }
 
-    public void setBookmark(boolean bookmark) {
-        isBookmark = bookmark;
+    public ContentValues getCV(){
+        ContentValues cv = new ContentValues();
+        cv.put(DBHelper.ORIGINAL_TEXT, this.originalText);
+        cv.put(DBHelper.TRANSLATED_TEXT, this.translatedText);
+        cv.put(DBHelper.LANGUAGE_DIRECTION, this.lang);
+        cv.put(DBHelper.IS_HISTORY, this.isHistory ? DBHelper.TRUE : DBHelper.FALSE);
+        cv.put(DBHelper.IS_BOOKMARK, this.isBookmark ? DBHelper.TRUE : DBHelper.FALSE);
+        return cv;
     }
 
     public boolean isBookmark() {
         return isBookmark;
     }
 
-    public String getOriginalText() {
-        return originalText;
+    public boolean isHistory() {
+        return isHistory;
     }
 
-    public String getTranslatedText() {
-        return translatedText;
+    public void setBookmark(boolean bookmark) {
+        isBookmark = bookmark;
     }
 
-    public String getLang() {
-        return lang;
-    }
-
-    public void setOriginalText(String originalText) {
-        this.originalText = originalText;
-    }
-
-    public void setTranslatedText(String translatedText) {
-        this.translatedText = translatedText;
-    }
-
-    public void setLang(String lang) {
-        this.lang = lang;
+    public void setHistory(boolean history) {
+        isHistory = history;
     }
 }
