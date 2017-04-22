@@ -1,15 +1,18 @@
-package nikonorov.net.translator.screens.historyscreen;
+package nikonorov.net.translator.screens.historyscreen.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import nikonorov.net.translator.R;
+import nikonorov.net.translator.mvp.view.BaseActivity;
+import nikonorov.net.translator.screens.historyscreen.MainHistoryScreenPresenter;
+import nikonorov.net.translator.screens.historyscreen.MainHistoryScreenPresenterImpl;
+import nikonorov.net.translator.screens.historyscreen.ViewPagerAdapter;
 import nikonorov.net.translator.screens.historyscreen.presenter.HistoryScreenPresenterImpl;
 import nikonorov.net.translator.screens.historyscreen.presenter.SavedTranslationsPresenterImpl;
 import nikonorov.net.translator.screens.listscreen.view.ListFragment;
@@ -19,16 +22,15 @@ import nikonorov.net.translator.screens.listscreen.view.ListFragment;
  * email@nikonorov.net
  */
 
-public class HistoryActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
+public class HistoryActivity extends BaseActivity<MainHistoryScreenPresenter>
+        implements MainHistoryView, TabLayout.OnTabSelectedListener {
 
     private ViewPager viewPager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.history_screen);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        presenter = new MainHistoryScreenPresenterImpl(this);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
@@ -45,6 +47,11 @@ public class HistoryActivity extends AppCompatActivity implements TabLayout.OnTa
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.tab_caption_bookmarks)));
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(this);
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.history_screen;
     }
 
     @Override

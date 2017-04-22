@@ -17,7 +17,7 @@ import android.view.View;
 
 import nikonorov.net.translator.R;
 import nikonorov.net.translator.mvp.presenter.MVPPresenter;
-import nikonorov.net.translator.screens.historyscreen.HistoryActivity;
+import nikonorov.net.translator.screens.historyscreen.view.HistoryActivity;
 import nikonorov.net.translator.screens.infoscreen.view.InfoActivity;
 import nikonorov.net.translator.screens.maintranslatorscreen.view.MainTranslatorActivity;
 

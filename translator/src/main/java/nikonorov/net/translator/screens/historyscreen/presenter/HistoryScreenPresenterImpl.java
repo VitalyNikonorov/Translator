@@ -7,7 +7,6 @@ import nikonorov.net.translator.screens.listscreen.model.ListScreenModelImpl;
 import nikonorov.net.translator.screens.listscreen.presenter.BaseListScreenPresenter;
 import nikonorov.net.translator.screens.listscreen.view.ListScreenView;
 import rx.Observer;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 

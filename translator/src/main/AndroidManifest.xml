@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screens.historyscreen.HistoryActivity" />
+        <activity android:name=".screens.historyscreen.view.HistoryActivity" />
         <activity android:name=".screens.infoscreen.view.InfoActivity"/>
     </application>
 
