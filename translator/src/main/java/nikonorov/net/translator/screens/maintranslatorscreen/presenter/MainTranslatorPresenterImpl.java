@@ -1,6 +1,5 @@
 package nikonorov.net.translator.screens.maintranslatorscreen.presenter;
 
-import android.support.annotation.IdRes;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -10,7 +9,7 @@ import java.util.Locale;
 
 import nikonorov.net.translator.R;
 import nikonorov.net.translator.data.model.Language;
-import nikonorov.net.translator.network.model.GetLangsResult;
+import nikonorov.net.translator.mvp.presenter.MVPPresenterImpl;
 import nikonorov.net.translator.network.model.TranslationResult;
 import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModel;
 import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModelImpl;
@@ -27,16 +26,17 @@ import rx.subscriptions.Subscriptions;
  * email@nikonorov.net
  */
 
-public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
+public class MainTranslatorPresenterImpl
+        extends MVPPresenterImpl<MainTranslatorView>
+        implements MainTranslatorPresenter {
 
     private final MainTranslatorModel model;
-    private WeakReference<MainTranslatorView> viewReference;
     private Subscription translationSubscription = Subscriptions.empty();
     private Subscription getLangsSubscription = Subscriptions.empty();
 
     public MainTranslatorPresenterImpl(MainTranslatorView view) {
         this.model = new MainTranslatorModelImpl();
-        this.viewReference = new WeakReference<>(view);
+        viewReference = new WeakReference<>(view);
     }
 
     @Override
@@ -102,26 +102,6 @@ public class MainTranslatorPresenterImpl implements MainTranslatorPresenter {
                 }
             }
         });
-    }
-
-    @Override
-    public void onNavigationItemClick(@IdRes int id) {
-        MainTranslatorView view = viewReference.get();
-        if (view == null) {
-            return;
-        }
-        switch (id) {
-            case R.id.nav_main_screen:
-                break;
-            case R.id.nav_history:
-                view.startHistoryScreen();
-                break;
-            case R.id.nav_info:
-                view.startInfoScreen();
-                break;
-            default:
-                break;
-        }
     }
 
     @Override

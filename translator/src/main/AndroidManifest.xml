@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".screens.historyscreen.HistoryActivity" />
-        <activity android:name=".screens.infoscreen.InfoActivity"/>
+        <activity android:name=".screens.infoscreen.view.InfoActivity"/>
     </application>
 
 </manifest>
