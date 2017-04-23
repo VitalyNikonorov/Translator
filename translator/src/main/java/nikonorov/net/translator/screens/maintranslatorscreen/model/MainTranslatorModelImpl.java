@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import nikonorov.net.translator.R;
 import nikonorov.net.translator.TranslatorApplication;
+import nikonorov.net.translator.data.JniManager;
 import nikonorov.net.translator.data.Repository;
 import nikonorov.net.translator.data.model.Language;
 import nikonorov.net.translator.data.model.TranslationPair;
@@ -35,7 +36,7 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     @Inject
     Context context;
 
-    private String key = "trnsl.1.1.20170318T213150Z.d83d1acad689334f.b7f777dde4109491a144049dfce47051939c04a2"; //mock for test
+    private final String key;
     private String textForTranslation;
     private final String autoDetectLang = "";
 
@@ -45,6 +46,7 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     private int langToPosition;
 
     public MainTranslatorModelImpl() {
+        key = JniManager.getAPIKey();
         TranslatorApplication.component.inject(this);
     }
 
