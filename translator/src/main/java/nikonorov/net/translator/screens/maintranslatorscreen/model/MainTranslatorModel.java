@@ -26,6 +26,6 @@ public interface MainTranslatorModel {
     List<String> getToLanguages();
     void setLangFrom(int position);
     void setLangTo(int position);
-    void addBookmark();
+    boolean changeBookmarkStatus();
     Observable<TranslationPair> getTranslationFromDB(TranslationResult translationResult);
 }

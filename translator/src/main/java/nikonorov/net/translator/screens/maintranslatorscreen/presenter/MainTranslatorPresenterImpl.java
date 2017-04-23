@@ -193,7 +193,11 @@ public class MainTranslatorPresenterImpl
 
     @Override
     public void onAddBookmarkClick() {
-        model.addBookmark();
+        boolean newStatus = model.changeBookmarkStatus();
+        MainTranslatorView view = view();
+        if (view != null) {
+            view.setActiveBookmarkBtn(newStatus);
+        }
     }
 
     @Override

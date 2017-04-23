@@ -163,9 +163,11 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     }
 
     @Override
-    public void addBookmark() {
-        currentTranslation.setBookmark(!currentTranslation.isBookmark());
+    public boolean changeBookmarkStatus() {
+        boolean newStatus = !currentTranslation.isBookmark();
+        currentTranslation.setBookmark(newStatus);
         repository.saveTranslation(currentTranslation);
+        return newStatus;
     }
 
     @Override
