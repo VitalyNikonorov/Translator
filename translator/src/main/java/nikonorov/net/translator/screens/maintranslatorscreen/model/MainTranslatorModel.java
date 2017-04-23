@@ -28,4 +28,7 @@ public interface MainTranslatorModel {
     void setLangTo(int position);
     boolean changeBookmarkStatus();
     Observable<TranslationPair> getTranslationFromDB(TranslationResult translationResult);
+    boolean isInternetAvailable();
+    String getTextForTranslation();
+    void setTextForTranslation(String text);
 }

@@ -114,6 +114,22 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
     }
 
     @Override
+    public void showNoInternetAlert() {
+        new AlertDialog.Builder(this)
+                .setIcon(R.drawable.no_internet)
+                .setMessage(R.string.no_internet_connection)
+                .setTitle(R.string.error_caption)
+                .setPositiveButton(R.string.action_retry, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        presenter.onRetryClick();
+                    }
+                })
+                .setNegativeButton(R.string.action_cancel, null)
+                .create()
+                .show();
+    }
+
+    @Override
     public void showError(@StringRes int msgId) {
         showToast(getString(msgId));
     }

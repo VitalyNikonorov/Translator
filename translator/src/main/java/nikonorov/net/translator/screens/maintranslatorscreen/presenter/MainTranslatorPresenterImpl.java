@@ -48,64 +48,72 @@ public class MainTranslatorPresenterImpl
 
     @Override
     public void callTranslation(String text) {
-        prepareSubscription(translationSubscription);
-        translationSubscription = model.translate(text).subscribe(new Observer<TranslationResult>() {
-            @Override
-            public void onCompleted() {
+        model.setTextForTranslation(text);
+        if (model.isInternetAvailable()) {
+            prepareSubscription(translationSubscription);
+            translationSubscription = model.translate(text).subscribe(new Observer<TranslationResult>() {
+                @Override
+                public void onCompleted() {
 
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                model.handleError(e);
-                MainTranslatorView view = view();
-                if (view != null) {
-                    view.showError(R.string.internal_error_msg);
                 }
-                e.printStackTrace();
-            }
 
-            @Override
-            public void onNext(TranslationResult translationResult) {
-                MainTranslatorView view = view();
-                switch (translationResult.code) {
-                    case 200:
-                        handleSuccessResult(translationResult);
-                        break;
-                    case 401:
-                    case 402:
-                        model.handleError(translationResult);
-                        if (view != null) {
-                            view.showError(R.string.internal_error_msg);
-                        }
-                        break;
-                    case 404:
-                        model.handleError(translationResult);
-                        if (view != null) {
-                            view.showRetryError(R.string.error_msg_limit_exceeded);
-                        }
-                        break;
-                    case 413:
-                        if (view != null) {
-                            view.showError(R.string.error_length_limit_exceeded);
-                        }
-                        break;
-                    case 422:
-                        if (view != null) {
-                            view.showError(R.string.error_cant_translate);
-                        }
-                        break;
-                    case 501:
-                        if (view != null) {
-                            view.showError(R.string.error_cant_translate);
-                        }
-                        break;
-                    default:
-                        model.handleError(translationResult);
-                        break;
+                @Override
+                public void onError(Throwable e) {
+                    model.handleError(e);
+                    MainTranslatorView view = view();
+                    if (view != null) {
+                        view.showError(R.string.internal_error_msg);
+                    }
+                    e.printStackTrace();
                 }
+
+                @Override
+                public void onNext(TranslationResult translationResult) {
+                    MainTranslatorView view = view();
+                    switch (translationResult.code) {
+                        case 200:
+                            handleSuccessResult(translationResult);
+                            break;
+                        case 401:
+                        case 402:
+                            model.handleError(translationResult);
+                            if (view != null) {
+                                view.showError(R.string.internal_error_msg);
+                            }
+                            break;
+                        case 404:
+                            model.handleError(translationResult);
+                            if (view != null) {
+                                view.showRetryError(R.string.error_msg_limit_exceeded);
+                            }
+                            break;
+                        case 413:
+                            if (view != null) {
+                                view.showError(R.string.error_length_limit_exceeded);
+                            }
+                            break;
+                        case 422:
+                            if (view != null) {
+                                view.showError(R.string.error_cant_translate);
+                            }
+                            break;
+                        case 501:
+                            if (view != null) {
+                                view.showError(R.string.error_cant_translate);
+                            }
+                            break;
+                        default:
+                            model.handleError(translationResult);
+                            break;
+                    }
+                }
+            });
+        } else {
+            MainTranslatorView view = view();
+            if (view != null) {
+                view.showNoInternetAlert();
             }
-        });
+        }
     }
 
     private void handleSuccessResult(final TranslationResult translationResult) {
@@ -178,7 +186,11 @@ public class MainTranslatorPresenterImpl
 
     @Override
     public void onRetryClick() {
-        //TODO retry call
+        callTranslation();
+    }
+
+    private void callTranslation() {
+        callTranslation(model.getTextForTranslation());
     }
 
     @Override

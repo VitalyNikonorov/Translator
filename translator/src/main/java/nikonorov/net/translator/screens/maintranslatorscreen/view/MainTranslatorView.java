@@ -14,6 +14,7 @@ import nikonorov.net.translator.mvp.view.MVPView;
 public interface MainTranslatorView extends MVPView {
     void showTranslatedResult(String text);
     void showError(String msg);
+    void showNoInternetAlert();
     void showError(@StringRes int msgId);
     void showRetryError(@StringRes int msgId);
     void setLangsFrom(List<String> langsFrom);

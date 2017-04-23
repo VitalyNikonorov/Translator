@@ -1,6 +1,8 @@
 package nikonorov.net.translator.screens.maintranslatorscreen.model;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -48,10 +50,12 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     private final ArrayList<Language> langsTo = new ArrayList<>();
     private int langFromPosition;
     private int langToPosition;
+    private final ConnectivityManager cm;
 
     public MainTranslatorModelImpl() {
         key = JniManager.getAPIKey();
         TranslatorApplication.component.inject(this);
+        cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
     @Override
@@ -183,5 +187,21 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     public Observable<TranslationPair> getTranslationFromDB(TranslationResult translationResult) {
         TranslationPair translation = new TranslationPair(textForTranslation, TextUtils.join(", ", translationResult.text), translationResult.lang);
         return repository.getTranslationFromDB(translation);
+    }
+
+    @Override
+    public boolean isInternetAvailable() {
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork.isConnectedOrConnecting();
+    }
+
+    @Override
+    public String getTextForTranslation() {
+        return textForTranslation;
+    }
+
+    @Override
+    public void setTextForTranslation(String text) {
+        textForTranslation = text;
     }
 }
