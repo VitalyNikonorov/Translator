@@ -100,6 +100,43 @@ public class Repository {
         return observable;
     }
 
+    public Observable<TranslationPair> getTranslationFromDB(TranslationPair translation) {
+        Observable<TranslationPair> observable = Observable.just(
+                db.query(String.format("SELECT * FROM %s WHERE (%s = \'%s\' AND %s = \'%s\' AND %s = \'%s\')",
+                        DBHelper.HISTORY_TABLE,
+                        DBHelper.ORIGINAL_TEXT,
+                        translation.originalText,
+                        DBHelper.TRANSLATED_TEXT,
+                        translation.translatedText,
+                        DBHelper.LANGUAGE_DIRECTION,
+                        translation.lang)))
+                .map(new Func1<Cursor, TranslationPair>() {
+                    @Override
+                    public TranslationPair call(Cursor cursor) {
+                        TranslationPair translationPair = null;
+                        if (cursor.moveToNext()) {
+                            String originalText = cursor.getString(1);
+                            String translatedText = cursor.getString(2);
+                            String language = cursor.getString(3);
+                            boolean isHistory = cursor.getInt(4) == DBHelper.TRUE;
+                            boolean isBookmark = cursor.getInt(5) == DBHelper.TRUE;
+
+                            translationPair = new TranslationPair(
+                                    originalText,
+                                    translatedText,
+                                    language,
+                                    isHistory,
+                                    isBookmark
+                            );
+                        }
+                        return translationPair;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        return observable;
+    }
+
     public Observable<List<TranslationPair>> getBookmarks() {
         Observable<List<TranslationPair>> observable = Observable.just(
                 db.query(String.format("SELECT * FROM %s WHERE %s=%d", DBHelper.HISTORY_TABLE, DBHelper.IS_BOOKMARK, DBHelper.TRUE)))

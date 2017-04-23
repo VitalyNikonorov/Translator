@@ -162,4 +162,10 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
         currentTranslation.setBookmark(!currentTranslation.isBookmark());
         repository.saveTranslation(currentTranslation);
     }
+
+    @Override
+    public Observable<TranslationPair> getTranslationFromDB(TranslationResult translationResult) {
+        TranslationPair translation = new TranslationPair(textForTranslation, TextUtils.join(", ", translationResult.text), translationResult.lang);
+        return repository.getTranslationFromDB(translation);
+    }
 }

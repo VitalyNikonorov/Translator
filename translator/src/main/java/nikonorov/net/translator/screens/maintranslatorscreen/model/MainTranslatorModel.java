@@ -3,6 +3,7 @@ package nikonorov.net.translator.screens.maintranslatorscreen.model;
 import java.util.List;
 
 import nikonorov.net.translator.data.model.Language;
+import nikonorov.net.translator.data.model.TranslationPair;
 import nikonorov.net.translator.network.model.GetLangsResult;
 import nikonorov.net.translator.network.model.TranslationResult;
 import rx.Observable;
@@ -25,4 +26,5 @@ public interface MainTranslatorModel {
     void setLangFrom(int position);
     void setLangTo(int position);
     void addBookmark();
+    Observable<TranslationPair> getTranslationFromDB(TranslationResult translationResult);
 }

@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import nikonorov.net.translator.R;
 import nikonorov.net.translator.data.model.Language;
+import nikonorov.net.translator.data.model.TranslationPair;
 import nikonorov.net.translator.mvp.presenter.MVPPresenterImpl;
 import nikonorov.net.translator.network.model.TranslationResult;
 import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModel;
@@ -64,10 +65,7 @@ public class MainTranslatorPresenterImpl
                 MainTranslatorView view = viewReference.get();
                 switch (translationResult.code) {
                     case 200:
-                        if (view != null) {
-                            view.showTranslatedResult(TextUtils.join(", ", translationResult.text));
-                        }
-                        model.saveTranslation(translationResult);
+                        handleSuccessResult(translationResult);
                         break;
                     case 401:
                     case 402:
@@ -100,6 +98,37 @@ public class MainTranslatorPresenterImpl
                     default:
                         model.handleError(translationResult);
                         break;
+                }
+            }
+        });
+    }
+
+    private void handleSuccessResult(final TranslationResult translationResult) {
+        final MainTranslatorView view = viewReference.get();
+        model.getTranslationFromDB(translationResult).subscribe(new Observer<TranslationPair>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(TranslationPair translationPair) {
+                if (translationPair == null) {
+                    model.saveTranslation(translationResult);
+                    if (view != null) {
+                        view.showTranslatedResult(TextUtils.join(", ", translationResult.text));
+                        view.setActiveBookmarkBtn(false);
+                    }
+                } else {
+                    if (view != null) {
+                        view.showTranslatedResult(TextUtils.join(", ", translationResult.text));
+                        view.setActiveBookmarkBtn(translationPair.isBookmark());
+                    }
                 }
             }
         });
