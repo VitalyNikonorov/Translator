@@ -8,12 +8,12 @@ import nikonorov.net.translator.mvp.presenter.MVPPresenter;
  */
 
 public interface MainTranslatorPresenter extends MVPPresenter {
-    void onTranslateBtnClick(String text);
+    void onTranslateEvent(String text);
     void onStart();
     void onStop();
     void onRetryClick();
     void onLangFromSelected(int position);
     void onLangToSelected(int position);
     void onAddBookmarkClick();
-    void onTranslationTextDeleted();
+    void onTranslationTextChanged(String text);
 }

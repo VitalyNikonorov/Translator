@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
@@ -67,9 +66,7 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (TextUtils.isEmpty(translationField.getText())) {
-                    presenter.onTranslationTextDeleted();
-                }
+                presenter.onTranslationTextChanged(translationField.getText().toString());
             }
         });
         findViewById(R.id.translate_btn).setOnClickListener(this);
@@ -176,7 +173,7 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.translate_btn:
-                presenter.onTranslateBtnClick(translationField.getText().toString());
+                presenter.onTranslateEvent(translationField.getText().toString());
                 break;
 
             case R.id.add_bookmark_btn:

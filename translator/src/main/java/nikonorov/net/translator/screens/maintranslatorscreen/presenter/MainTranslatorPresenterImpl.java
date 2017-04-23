@@ -1,11 +1,11 @@
 package nikonorov.net.translator.screens.maintranslatorscreen.presenter;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import nikonorov.net.translator.R;
 import nikonorov.net.translator.data.model.Language;
@@ -15,6 +15,7 @@ import nikonorov.net.translator.network.model.TranslationResult;
 import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModel;
 import nikonorov.net.translator.screens.maintranslatorscreen.model.MainTranslatorModelImpl;
 import nikonorov.net.translator.screens.maintranslatorscreen.view.MainTranslatorView;
+import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
@@ -31,9 +32,13 @@ public class MainTranslatorPresenterImpl
         extends MVPPresenterImpl<MainTranslatorView>
         implements MainTranslatorPresenter {
 
+    private final int ONE_SECOND_MILLIS = 1000;
+    private final int DELAY_IN_SECONDS = 1;
+
     private final MainTranslatorModel model;
     private Subscription translationSubscription = Subscriptions.empty();
     private Subscription getLangsSubscription = Subscriptions.empty();
+    private Subscription translationTextChanges = Subscriptions.empty();
     private final String locale = Locale.getDefault().getLanguage();
 
     public MainTranslatorPresenterImpl(MainTranslatorView view) {
@@ -42,7 +47,7 @@ public class MainTranslatorPresenterImpl
     }
 
     @Override
-    public void onTranslateBtnClick(String text) {
+    public void onTranslateEvent(String text) {
         prepareSubscription(translationSubscription);
         translationSubscription = model.translate(text).subscribe(new Observer<TranslationResult>() {
             @Override
@@ -192,11 +197,33 @@ public class MainTranslatorPresenterImpl
     }
 
     @Override
-    public void onTranslationTextDeleted() {
-        MainTranslatorView view = viewReference.get();
-        if (view != null) {
-            view.hideBookMarkBtn();
-            view.showTranslatedResult("");
+    public void onTranslationTextChanged(final String text) {
+        if ("".equals(text)) {
+            MainTranslatorView view = viewReference.get();
+            if (view != null) {
+                view.hideBookMarkBtn();
+                view.showTranslatedResult("");
+            }
+        } else {
+            prepareSubscription(translationTextChanges);
+            translationTextChanges = Observable.interval(ONE_SECOND_MILLIS, TimeUnit.MILLISECONDS)
+                    .take(DELAY_IN_SECONDS)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Long>() {
+                        @Override
+                        public void onCompleted() {
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                        }
+
+                        @Override
+                        public void onNext(Long aLong) {
+                            onTranslateEvent(text);
+                        }
+                    });
         }
     }
 
