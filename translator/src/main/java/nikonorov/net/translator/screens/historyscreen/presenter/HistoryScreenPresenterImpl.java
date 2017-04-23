@@ -68,7 +68,7 @@ public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
 
             @Override
             public void onError(Throwable e) {
-
+                e.printStackTrace();
             }
 
             @Override

@@ -218,9 +218,14 @@ public class Repository {
                         db.update(DBHelper.HISTORY_TABLE, translation.getCV(), null);
                     } else {
                         db.delete(DBHelper.HISTORY_TABLE,
-                                String.format("%s = \'%s\'", DBHelper.ORIGINAL_TEXT, translation.originalText),
-                                String.format("%s = \'%s\'", DBHelper.TRANSLATED_TEXT, translation.translatedText),
-                                String.format("%s = \'%s\'", DBHelper.LANGUAGE_DIRECTION, translation.lang));
+                                String.format("%s = \'%s\' AND %s = \'%s\' AND %s = \'%s\'",
+                                        DBHelper.ORIGINAL_TEXT,
+                                        translation.originalText,
+                                        DBHelper.TRANSLATED_TEXT,
+                                        translation.translatedText,
+                                        DBHelper.LANGUAGE_DIRECTION,
+                                        translation.lang)
+                        );
                     }
                 }
                 return null;
@@ -238,9 +243,14 @@ public class Repository {
                         db.update(DBHelper.HISTORY_TABLE, translation.getCV(), null);
                     } else {
                         db.delete(DBHelper.HISTORY_TABLE,
-                                String.format("%s = \'%s\'", DBHelper.ORIGINAL_TEXT, translation.originalText),
-                                String.format("%s = \'%s\'", DBHelper.TRANSLATED_TEXT, translation.translatedText),
-                                String.format("%s = \'%s\'", DBHelper.LANGUAGE_DIRECTION, translation.lang));
+                                String.format("%s = \'%s\' AND %s = \'%s\' AND %s = \'%s\'",
+                                        DBHelper.ORIGINAL_TEXT,
+                                        translation.originalText,
+                                        DBHelper.TRANSLATED_TEXT,
+                                        translation.translatedText,
+                                        DBHelper.LANGUAGE_DIRECTION,
+                                        translation.lang)
+                        );
                     }
                 }
                 return null;
