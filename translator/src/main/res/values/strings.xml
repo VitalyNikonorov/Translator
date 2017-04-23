@@ -23,4 +23,6 @@
     <string name="error_cant_translate">Текст не может быт переведен</string>
     <string name="error_direction_not_support">Заданное направление перевода не поддерживается</string>
     <string name="detect_language">Определить язык</string>
+    <string name="empty_list_history">История пока пуста. Переводите, чтобы заполнить этот список.</string>
+    <string name="empty_list_bookmarks">В закладках пока пусто. Отметье важные выражения, чтобы они были тут.</string>
 </resources>

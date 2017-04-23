@@ -2,6 +2,7 @@ package nikonorov.net.translator.screens.historyscreen.presenter;
 
 import java.util.List;
 
+import nikonorov.net.translator.R;
 import nikonorov.net.translator.data.model.TranslationPair;
 import nikonorov.net.translator.screens.listscreen.model.ListScreenModelImpl;
 import nikonorov.net.translator.screens.listscreen.presenter.BaseListScreenPresenter;
@@ -23,10 +24,7 @@ public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
 
     @Override
     public void onStart() {
-        ListScreenView screenView = view.get();
-        if (screenView != null) {
-            screenView.showPreloader();
-        }
+        super.onStart();
         callHistoryRequest();
     }
 
@@ -53,7 +51,7 @@ public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
                             if (translationPairs.size() > 0) {
                                 screenView.showContent(translationPairs);
                             } else {
-                                screenView.showPreloader();
+                                screenView.showEmptyView(R.string.empty_list_history);
                             }
                         }
                     }

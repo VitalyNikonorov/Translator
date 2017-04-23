@@ -1,5 +1,7 @@
 package nikonorov.net.translator.screens.listscreen.view;
 
+import android.support.annotation.StringRes;
+
 import java.util.List;
 
 import nikonorov.net.translator.data.model.TranslationPair;
@@ -11,7 +13,7 @@ import nikonorov.net.translator.data.model.TranslationPair;
 
 public interface ListScreenView {
 
-    void showEmptyView();
+    void showEmptyView(@StringRes int emptyTitle);
     void showPreloader();
     void showContent(List<TranslationPair> data);
 

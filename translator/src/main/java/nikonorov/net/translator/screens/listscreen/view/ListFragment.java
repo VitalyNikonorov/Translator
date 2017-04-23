@@ -2,6 +2,7 @@ package nikonorov.net.translator.screens.listscreen.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -32,6 +34,7 @@ public class ListFragment extends Fragment implements ListScreenView {
     private View contentView;
     private View preLoader;
     private ListAdapter adapter;
+    private TextView emptyListMsgTV;
 
     public static ListFragment getInstance(ListScreenPresenter presenter) {
         ListFragment fragment = new ListFragment();
@@ -69,6 +72,7 @@ public class ListFragment extends Fragment implements ListScreenView {
         adapter = new ListAdapter(presenter);
         listView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         listView.setAdapter(adapter);
+        emptyListMsgTV = (TextView) view.findViewById(R.id.empty_list_msg);
     }
 
     @Override
@@ -88,7 +92,8 @@ public class ListFragment extends Fragment implements ListScreenView {
     }
 
     @Override
-    public void showEmptyView() {
+    public void showEmptyView(@StringRes int emptyTitle) {
+        emptyListMsgTV.setText(emptyTitle);
         contentView.setVisibility(View.GONE);
         preLoader.setVisibility(View.GONE);
         emptyView.setVisibility(View.VISIBLE);

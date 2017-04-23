@@ -40,6 +40,14 @@ public abstract class BaseListScreenPresenter implements ListScreenPresenter {
         }
     }
 
+    @Override
+    public void onStart() {
+        ListScreenView screenView = view.get();
+        if (screenView != null) {
+            screenView.showPreloader();
+        }
+    }
+
     public void onStop() {
         prepareSubscription();
     }
