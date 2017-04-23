@@ -6,10 +6,8 @@ package nikonorov.net.translator.data;
  */
 
 public class JniManager {
-    // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("data");
     }
-
     public static native String getAPIKey();
 }

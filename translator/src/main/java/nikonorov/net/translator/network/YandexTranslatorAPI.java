@@ -20,7 +20,7 @@ public interface YandexTranslatorAPI {
             @Query("lang") String lang
     );
 
-    @GET("requestLanguages")
+    @GET("getLangs")
     Observable<GetLangsResult> getLangs(
             @Query("key") String key,
             @Query("ui") String ui
