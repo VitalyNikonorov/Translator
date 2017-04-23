@@ -71,12 +71,12 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
             }
         });
         langFromSpinner = (Spinner) findViewById(R.id.lang_from_spinner);
-        langsFromAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, langsFrom);
+        langsFromAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, langsFrom);
         langsFromAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         langFromSpinner.setAdapter(langsFromAdapter);
         langFromSpinner.setOnItemSelectedListener(this);
         langToSpinner = (Spinner) findViewById(R.id.lang_to_spinner);
-        langsToAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, langsTo);
+        langsToAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, langsTo);
         langsToAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         langToSpinner.setAdapter(langsToAdapter);
         langToSpinner.setOnItemSelectedListener(this);
