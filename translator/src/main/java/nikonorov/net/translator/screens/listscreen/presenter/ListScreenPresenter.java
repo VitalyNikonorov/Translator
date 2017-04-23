@@ -13,6 +13,6 @@ public interface ListScreenPresenter {
     void setView(ListScreenView view);
     void onStart();
     void onStop();
-    void onListItemIconClick(TranslationPair translation);
+    void onListItemIconClick(TranslationPair translation, int position);
     void onDeleteBtnClick();
 }

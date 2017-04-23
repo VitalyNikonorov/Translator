@@ -16,5 +16,6 @@ public interface ListScreenView {
     void showEmptyView(@StringRes int emptyTitle);
     void showPreloader();
     void showContent(List<TranslationPair> data);
-
+    void changeBookmarkStatus(int position);
+    void deleteItem(int position);
 }

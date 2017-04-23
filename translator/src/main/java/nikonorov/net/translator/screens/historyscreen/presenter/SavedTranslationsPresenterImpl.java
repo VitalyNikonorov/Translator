@@ -28,6 +28,15 @@ public class SavedTranslationsPresenterImpl extends BaseListScreenPresenter {
         callBookmarksRequest();
     }
 
+    @Override
+    public void onListItemIconClick(TranslationPair translation, int position) {
+        model.addBookmark(translation);
+        ListScreenView view = viewRef.get();
+        if (view != null) {
+            view.deleteItem(position);
+        }
+    }
+
     private void callBookmarksRequest() {
         prepareSubscription();
         subscription = model.getBookmarks()
@@ -46,7 +55,7 @@ public class SavedTranslationsPresenterImpl extends BaseListScreenPresenter {
 
                     @Override
                     public void onNext(List<TranslationPair> translationPairs) {
-                        ListScreenView screenView = view.get();
+                        ListScreenView screenView = viewRef.get();
                         if (screenView != null) {
                             if (translationPairs.size() > 0) {
                                 screenView.showContent(translationPairs);

@@ -2,7 +2,6 @@ package nikonorov.net.translator.screens.listscreen.presenter;
 
 import java.lang.ref.WeakReference;
 
-import nikonorov.net.translator.data.model.TranslationPair;
 import nikonorov.net.translator.screens.listscreen.model.ListScreenModel;
 import nikonorov.net.translator.screens.listscreen.model.ListScreenModelImpl;
 import nikonorov.net.translator.screens.listscreen.view.ListScreenView;
@@ -16,22 +15,16 @@ import rx.subscriptions.Subscriptions;
 
 public abstract class BaseListScreenPresenter implements ListScreenPresenter {
 
-    protected WeakReference<ListScreenView> view;
+    protected WeakReference<ListScreenView> viewRef;
     protected ListScreenModel model;
     protected Subscription subscription = Subscriptions.empty();
 
-    @Override
     public void setView(ListScreenView view) {
-        this.view = new WeakReference<>(view);
+        this.viewRef = new WeakReference<>(view);
     }
 
     public BaseListScreenPresenter() {
         model = new ListScreenModelImpl();
-    }
-
-    @Override
-    public void onListItemIconClick(TranslationPair translation) {
-        model.addBookmark(translation);
     }
 
     protected void prepareSubscription() {
@@ -42,7 +35,7 @@ public abstract class BaseListScreenPresenter implements ListScreenPresenter {
 
     @Override
     public void onStart() {
-        ListScreenView screenView = view.get();
+        ListScreenView screenView = viewRef.get();
         if (screenView != null) {
             screenView.showPreloader();
         }

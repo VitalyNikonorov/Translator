@@ -6,7 +6,6 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -117,5 +116,15 @@ public class ListFragment extends Fragment implements ListScreenView {
                 adapter.setDataList(data);
             }
         });
+    }
+
+    @Override
+    public void changeBookmarkStatus(int position) {
+        adapter.changeBookmarkStatus(position);
+    }
+
+    @Override
+    public void deleteItem(int position) {
+        adapter.deleteItem(position);
     }
 }

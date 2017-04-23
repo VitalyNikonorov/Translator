@@ -66,6 +66,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         return dataList.size();
     }
 
+    public void deleteItem(int position) {
+        dataList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void changeBookmarkStatus(int position) {
+        dataList.get(position).setBookmark(!dataList.get(position).isBookmark());
+        notifyItemChanged(position);
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView originalText;
         TextView translatedText;
@@ -81,7 +91,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    presenter.onListItemIconClick(dataList.get(getAdapterPosition()));
+                    presenter.onListItemIconClick(dataList.get(getAdapterPosition()), getAdapterPosition());
                 }
             });
         }

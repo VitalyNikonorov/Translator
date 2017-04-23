@@ -28,6 +28,15 @@ public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
         callHistoryRequest();
     }
 
+    @Override
+    public void onListItemIconClick(TranslationPair translation, int position) {
+        model.addBookmark(translation);
+        ListScreenView view = viewRef.get();
+        if (view != null) {
+            view.changeBookmarkStatus(position);
+        }
+    }
+
     private void callHistoryRequest() {
         prepareSubscription();
         subscription = model.getHistory()
@@ -46,7 +55,7 @@ public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
 
                     @Override
                     public void onNext(List<TranslationPair> translationPairs) {
-                        ListScreenView screenView = view.get();
+                        ListScreenView screenView = viewRef.get();
                         if (screenView != null) {
                             if (translationPairs.size() > 0) {
                                 screenView.showContent(translationPairs);
