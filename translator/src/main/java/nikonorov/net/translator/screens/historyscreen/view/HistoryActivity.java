@@ -31,11 +31,7 @@ public class HistoryActivity extends BaseActivity<MainHistoryScreenPresenter>
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new MainHistoryScreenPresenterImpl(this);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+
         viewPager = (ViewPager) findViewById(R.id.history_view_pager);
         final ListFragment[] fragments = new ListFragment[2];
         fragments[0] = ListFragment.getInstance(new HistoryScreenPresenterImpl());

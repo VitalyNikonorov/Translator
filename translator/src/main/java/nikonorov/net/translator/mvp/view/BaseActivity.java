@@ -87,7 +87,7 @@ public abstract class BaseActivity<P extends MVPPresenter>
 
     private void startScreen(Class<? extends Activity> clazz) {
         if (!this.getClass().isAssignableFrom(clazz)) {
-            startActivity(new Intent(this, clazz));
+            startActivity(new Intent(this, clazz).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         }
     }
 
