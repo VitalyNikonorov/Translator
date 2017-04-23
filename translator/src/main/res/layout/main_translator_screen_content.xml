@@ -21,13 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/translate_btn"
-            android:layout_below="@id/translated_text"
-            android:text="translate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
         <ImageView
             android:id="@+id/add_bookmark_btn"
             android:visibility="gone"

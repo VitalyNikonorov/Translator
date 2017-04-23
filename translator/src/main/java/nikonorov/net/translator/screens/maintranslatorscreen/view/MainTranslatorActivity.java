@@ -69,7 +69,6 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
                 presenter.onTranslationTextChanged(translationField.getText().toString());
             }
         });
-        findViewById(R.id.translate_btn).setOnClickListener(this);
         langFromSpinner = (Spinner) findViewById(R.id.lang_from_spinner);
         langsFromAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, langsFrom);
         langsFromAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -172,10 +171,6 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.translate_btn:
-                presenter.onTranslateEvent(translationField.getText().toString());
-                break;
-
             case R.id.add_bookmark_btn:
                 presenter.onAddBookmarkClick();
                 break;

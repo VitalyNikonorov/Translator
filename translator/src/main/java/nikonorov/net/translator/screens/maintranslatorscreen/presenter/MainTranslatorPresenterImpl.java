@@ -47,7 +47,7 @@ public class MainTranslatorPresenterImpl
     }
 
     @Override
-    public void onTranslateEvent(String text) {
+    public void callTranslation(String text) {
         prepareSubscription(translationSubscription);
         translationSubscription = model.translate(text).subscribe(new Observer<TranslationResult>() {
             @Override
@@ -198,6 +198,7 @@ public class MainTranslatorPresenterImpl
 
     @Override
     public void onTranslationTextChanged(final String text) {
+        prepareSubscription(translationTextChanges);
         if ("".equals(text)) {
             MainTranslatorView view = viewReference.get();
             if (view != null) {
@@ -205,7 +206,6 @@ public class MainTranslatorPresenterImpl
                 view.showTranslatedResult("");
             }
         } else {
-            prepareSubscription(translationTextChanges);
             translationTextChanges = Observable.interval(ONE_SECOND_MILLIS, TimeUnit.MILLISECONDS)
                     .take(DELAY_IN_SECONDS)
                     .subscribeOn(Schedulers.io())
@@ -221,7 +221,7 @@ public class MainTranslatorPresenterImpl
 
                         @Override
                         public void onNext(Long aLong) {
-                            onTranslateEvent(text);
+                            callTranslation(text);
                         }
                     });
         }

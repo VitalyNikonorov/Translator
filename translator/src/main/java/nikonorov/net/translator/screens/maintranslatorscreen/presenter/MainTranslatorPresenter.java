@@ -8,7 +8,7 @@ import nikonorov.net.translator.mvp.presenter.MVPPresenter;
  */
 
 public interface MainTranslatorPresenter extends MVPPresenter {
-    void onTranslateEvent(String text);
+    void callTranslation(String text);
     void onStart();
     void onStop();
     void onRetryClick();
