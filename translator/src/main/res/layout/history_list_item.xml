@@ -6,12 +6,15 @@
     <ImageView
         android:id="@+id/icon"
         android:layout_alignParentLeft="true"
+        android:layout_margin="16dp"
         android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/original_text"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
         android:layout_toLeftOf="@+id/lang"
         android:layout_toRightOf="@+id/icon"
         android:layout_width="wrap_content"
@@ -21,15 +24,18 @@
         android:id="@+id/translated_text"
         android:layout_toLeftOf="@+id/lang"
         android:layout_toRightOf="@+id/icon"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
         android:layout_below="@+id/original_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/lang"
+        android:layout_margin="16dp"
         android:layout_alignParentRight="true"
         android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

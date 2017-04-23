@@ -6,6 +6,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="translator_service_info">Переведено сервисом <a href="http://translate.yandex.ru/">«Яндекс.Переводчик»</a></string>
 
     <string name="nav_drawer_menu_main">Главный экран</string>
     <string name="nav_drawer_menu_history">История</string>
