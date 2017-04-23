@@ -34,8 +34,8 @@ public class ListScreenModelImpl implements ListScreenModel {
     }
 
     @Override
-    public void addBookmark(TranslationPair translation) {
-        translation.setBookmark(true);
+    public void changeBookmarkStatus(TranslationPair translation) {
+        translation.setBookmark(!translation.isBookmark());
         repository.saveTranslation(translation);
     }
 

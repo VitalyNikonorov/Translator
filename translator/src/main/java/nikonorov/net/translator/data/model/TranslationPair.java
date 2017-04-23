@@ -21,6 +21,14 @@ public class TranslationPair {
         this(originalText, translatedText, lang, true, false);
     }
 
+    public TranslationPair(TranslationPair translationPair) {
+        this.originalText = translationPair.originalText;
+        this.translatedText = translationPair.translatedText;
+        this.lang = translationPair.lang;
+        this.isHistory = translationPair.isHistory();
+        this.isBookmark = translationPair.isBookmark();
+    }
+
     public TranslationPair(String originalText, String translatedText, String lang, boolean isHistory, boolean isBookmark) {
         this.originalText = originalText;
         this.translatedText = translatedText;

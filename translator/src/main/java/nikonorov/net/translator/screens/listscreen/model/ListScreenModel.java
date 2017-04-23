@@ -13,7 +13,7 @@ import rx.Observable;
 public interface ListScreenModel {
     Observable<List<TranslationPair>> getHistory();
     Observable<List<TranslationPair>> getBookmarks();
-    void addBookmark(TranslationPair translation);
+    void changeBookmarkStatus(TranslationPair translation);
     Observable clearHistory();
     Observable clearBookmarks();
 }

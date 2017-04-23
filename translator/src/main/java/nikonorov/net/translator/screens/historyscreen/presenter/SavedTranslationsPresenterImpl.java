@@ -30,7 +30,7 @@ public class SavedTranslationsPresenterImpl extends BaseListScreenPresenter {
 
     @Override
     public void onListItemIconClick(TranslationPair translation, int position) {
-        model.addBookmark(translation);
+        model.changeBookmarkStatus(translation);
         ListScreenView view = viewRef.get();
         if (view != null) {
             view.deleteItem(position);

@@ -91,7 +91,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    presenter.onListItemIconClick(dataList.get(getAdapterPosition()), getAdapterPosition());
+                    presenter.onListItemIconClick(new TranslationPair(dataList.get(getAdapterPosition())), getAdapterPosition());
                 }
             });
         }
