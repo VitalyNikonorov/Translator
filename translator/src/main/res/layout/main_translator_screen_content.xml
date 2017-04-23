@@ -20,7 +20,6 @@
             android:id="@+id/translation_service_info"
             android:layout_below="@id/translating_text"
             android:text="@string/translator_service_info"
-            android:autoLink="web"
             android:layout_margin="16dp"
             android:textAlignment="center"
             android:layout_width="match_parent"

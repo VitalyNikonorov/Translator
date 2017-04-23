@@ -7,8 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -83,6 +83,7 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
         langToSpinner.setOnItemSelectedListener(this);
         addBookMarkBtn = (ImageView) findViewById(R.id.add_bookmark_btn);
         addBookMarkBtn.setOnClickListener(this);
+        ((TextView)findViewById(R.id.translation_service_info)).setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override
