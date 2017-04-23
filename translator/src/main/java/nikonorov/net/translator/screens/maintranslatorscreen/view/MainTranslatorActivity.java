@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -155,7 +157,9 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
         } else {
             res = R.drawable.ic_bookmark_notselected;
         }
-        addBookMarkBtn.setImageResource(res);
+        Picasso.with(this)
+                .load(res)
+                .into(addBookMarkBtn);
         addBookMarkBtn.setVisibility(View.VISIBLE);
     }
 

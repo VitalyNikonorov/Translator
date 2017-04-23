@@ -125,6 +125,7 @@ public class MainTranslatorPresenterImpl
                         view.setActiveBookmarkBtn(false);
                     }
                 } else {
+                    model.setCurrentTranslation(translationPair);
                     if (view != null) {
                         view.showTranslatedResult(TextUtils.join(", ", translationResult.text));
                         view.setActiveBookmarkBtn(translationPair.isBookmark());

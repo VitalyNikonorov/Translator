@@ -106,8 +106,13 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     @Override
     public void saveTranslation(TranslationResult translationResult) {
         TranslationPair translation = new TranslationPair(textForTranslation, TextUtils.join(", ", translationResult.text), translationResult.lang);
-        currentTranslation = translation;
+        setCurrentTranslation(translation);
         repository.saveTranslation(translation);
+    }
+
+    @Override
+    public void setCurrentTranslation(TranslationPair translation) {
+        currentTranslation = translation;
     }
 
     @Override

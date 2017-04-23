@@ -45,4 +45,5 @@ dependencies {
     compile 'com.squareup.sqlbrite:sqlbrite:0.7.0'
     testCompile 'junit:junit:4.12'
     apt 'com.google.dagger:dagger-compiler:2.8'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +56,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         holder.lang.setText(dataList.get(position).lang);
         @DrawableRes final int iconRes = dataList.get(position).isBookmark() ? R.drawable.ic_bookmark_selected : R.drawable.ic_bookmark_notselected;
         holder.icon.setImageResource(iconRes);
+        Picasso.with(holder.icon.getContext())
+                .load(iconRes)
+                .into(holder.icon);
     }
 
     @Override
