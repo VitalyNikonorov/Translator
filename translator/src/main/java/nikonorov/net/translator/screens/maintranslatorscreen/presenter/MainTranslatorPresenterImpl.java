@@ -146,6 +146,16 @@ public class MainTranslatorPresenterImpl
         //TODO retry call
     }
 
+    @Override
+    public void onLangFromSelected(int position) {
+        model.setLangFrom(position);
+    }
+
+    @Override
+    public void onLangToSelected(int position) {
+        model.setLangTo(position);
+    }
+
     protected void prepareSubscription(Subscription subscription) {
         if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();

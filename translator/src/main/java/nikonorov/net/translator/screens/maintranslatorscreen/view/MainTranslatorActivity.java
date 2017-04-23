@@ -137,12 +137,11 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.lang_from_spinner:
-
+                presenter.onLangFromSelected(position);
                 break;
             case R.id.lang_to_spinner:
-
+                presenter.onLangToSelected(position);
                 break;
-
             default:
                 break;
         }

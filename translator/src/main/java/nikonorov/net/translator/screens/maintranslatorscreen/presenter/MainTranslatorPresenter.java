@@ -12,4 +12,6 @@ public interface MainTranslatorPresenter extends MVPPresenter {
     void onStart();
     void onStop();
     void onRetryClick();
+    void onLangFromSelected(int position);
+    void onLangToSelected(int position);
 }

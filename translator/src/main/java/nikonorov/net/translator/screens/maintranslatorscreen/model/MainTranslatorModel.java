@@ -22,4 +22,6 @@ public interface MainTranslatorModel {
     void setLanguages(List<Language> languages, String locale);
     List<String> getFromLanguages();
     List<String> getToLanguages();
+    void setLangFrom(int position);
+    void setLangTo(int position);
 }

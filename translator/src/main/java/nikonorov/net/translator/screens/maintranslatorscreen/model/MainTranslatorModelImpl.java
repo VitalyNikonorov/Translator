@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,7 +17,6 @@ import nikonorov.net.translator.network.YandexTranslatorAPI;
 import nikonorov.net.translator.network.model.GetLangsResult;
 import nikonorov.net.translator.network.model.TranslationResult;
 import rx.Observable;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -37,13 +35,14 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     @Inject
     Context context;
 
-    private String lang = "en-ru"; //mock for test
     private String key = "trnsl.1.1.20170318T213150Z.d83d1acad689334f.b7f777dde4109491a144049dfce47051939c04a2"; //mock for test
     private String textForTranslation;
     private final String autoDetectLang = "";
 
     private final ArrayList<Language> langsFrom = new ArrayList<>();
     private final ArrayList<Language> langsTo = new ArrayList<>();
+    private int langFromPosition;
+    private int langToPosition;
 
     public MainTranslatorModelImpl() {
         TranslatorApplication.component.inject(this);
@@ -52,8 +51,14 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     @Override
     public Observable<TranslationResult> translate(String text) {
         textForTranslation = text;
+        StringBuilder langBuilder = new StringBuilder();
+        if (!langsFrom.get(langFromPosition).symbol.equals("")){
+            langBuilder.append(langsFrom.get(langFromPosition).symbol)
+                    .append("-");
+        }
+        langBuilder.append(langsTo.get(langToPosition).symbol);
         return translatorAPI
-                .translate(key, text, lang)
+                .translate(key, text, langBuilder.toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -136,5 +141,15 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
             langs.add(lang.description);
         }
         return langs;
+    }
+
+    @Override
+    public void setLangFrom(int position) {
+        langFromPosition = position;
+    }
+
+    @Override
+    public void setLangTo(int position) {
+        langToPosition = position;
     }
 }

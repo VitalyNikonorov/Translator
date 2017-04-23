@@ -213,7 +213,7 @@ public class Repository {
 
     public Observable<List<Language>> getLanguages(final String locale) {
         Observable<List<Language>> observable = Observable.just(
-                db.query(String.format("SELECT * FROM %s WHERE %s='%s'", DBHelper.LANGUAGES_TABLE, DBHelper.LOCALE, locale)))
+                db.query(String.format("SELECT * FROM %s WHERE %s='%s' ORDER BY %s", DBHelper.LANGUAGES_TABLE, DBHelper.LOCALE, locale, DBHelper.DESCRIPTION)))
                 .map(new Func1<Cursor, List<Language>>() {
                     @Override
                     public List<Language> call(Cursor cursor) {
