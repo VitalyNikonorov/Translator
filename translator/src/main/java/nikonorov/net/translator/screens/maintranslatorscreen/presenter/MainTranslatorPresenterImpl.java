@@ -106,10 +106,10 @@ public class MainTranslatorPresenterImpl
 
     @Override
     public void onStart() {
-        String locale = Locale.getDefault().getLanguage();
+        final String locale = Locale.getDefault().getLanguage();
         prepareSubscription(getLangsSubscription);
         getLangsSubscription = model
-                .getLangs(locale)
+                .requestLanguages(locale)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Language>>() {
@@ -125,7 +125,12 @@ public class MainTranslatorPresenterImpl
 
             @Override
             public void onNext(List<Language> languages) {
-                Log.i("TAG", String.valueOf(languages.size()));
+                model.setLanguages(languages, locale);
+                MainTranslatorView view = viewReference.get();
+                if (view != null) {
+                    view.setLangsFrom(model.getFromLanguages());
+                    view.setLangsTo(model.getToLanguages());
+                }
             }
         });
     }

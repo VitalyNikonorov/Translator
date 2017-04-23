@@ -15,8 +15,11 @@ import rx.Observable;
 public interface MainTranslatorModel {
 
     Observable<TranslationResult> translate(String text);
-    Observable<List<Language>> getLangs(String locale);
+    Observable<List<Language>> requestLanguages(String locale);
     void saveTranslation(TranslationResult translationResult);
     void handleError(TranslationResult result);
     void handleError(Throwable error);
+    void setLanguages(List<Language> languages, String locale);
+    List<String> getFromLanguages();
+    List<String> getToLanguages();
 }

@@ -1,5 +1,6 @@
 package nikonorov.net.translator.screens.maintranslatorscreen.model;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import nikonorov.net.translator.R;
 import nikonorov.net.translator.TranslatorApplication;
 import nikonorov.net.translator.data.Repository;
 import nikonorov.net.translator.data.model.Language;
@@ -32,9 +34,16 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     YandexTranslatorAPI translatorAPI;
     @Inject
     Repository repository;
+    @Inject
+    Context context;
+
     private String lang = "en-ru"; //mock for test
     private String key = "trnsl.1.1.20170318T213150Z.d83d1acad689334f.b7f777dde4109491a144049dfce47051939c04a2"; //mock for test
     private String textForTranslation;
+    private final String autoDetectLang = "";
+
+    private final ArrayList<Language> langsFrom = new ArrayList<>();
+    private final ArrayList<Language> langsTo = new ArrayList<>();
 
     public MainTranslatorModelImpl() {
         TranslatorApplication.component.inject(this);
@@ -50,7 +59,7 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     }
 
     @Override
-    public Observable<List<Language>> getLangs(String locale) {
+    public Observable<List<Language>> requestLanguages(String locale) {
         Observable<List<Language>> observable = Observable
                 .concat(getLangsFromDB(locale), getLangsFromAPI(locale))
                 .subscribeOn(Schedulers.io())
@@ -58,7 +67,7 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
         return observable;
     }
 
-    private Observable<List<Language>> getLangsFromDB(String locale) {
+    private Observable<List<Language>> getLangsFromDB(final String locale) {
         Observable<List<Language>> observable = repository.getLanguages(locale)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -74,8 +83,10 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
                         List<Language> languages = new ArrayList<>();
                         for (String lang : getLangsResult.langs.keySet()) {
                             Language language = new Language(getLangsResult.langs.get(lang), lang, locale);
-                            repository.saveLanguage(language);
                             languages.add(language);
+                        }
+                        if (!langsTo.equals(languages)){
+                            repository.saveLanguages(languages);
                         }
                         return languages;
                     }
@@ -98,5 +109,32 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     @Override
     public void handleError(Throwable error) {
         //TODO send msd about error
+    }
+
+    @Override
+    public void setLanguages(List<Language> languages, String locale) {
+        if (!langsTo.equals(languages)) {
+            langsTo.addAll(languages);
+            langsFrom.add(new Language(context.getString(R.string.detect_language), autoDetectLang, locale));
+            langsFrom.addAll(languages);
+        }
+    }
+
+    @Override
+    public List<String> getFromLanguages() {
+        ArrayList<String> langs = new ArrayList<>();
+        for (Language lang : langsFrom) {
+            langs.add(lang.description);
+        }
+        return langs;
+    }
+
+    @Override
+    public List<String> getToLanguages() {
+        ArrayList<String> langs = new ArrayList<>();
+        for (Language lang : langsTo) {
+            langs.add(lang.description);
+        }
+        return langs;
     }
 }

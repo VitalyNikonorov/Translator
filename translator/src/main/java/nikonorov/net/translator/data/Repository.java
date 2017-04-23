@@ -8,23 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
-import nikonorov.net.translator.R;
 import nikonorov.net.translator.TranslatorApplication;
 import nikonorov.net.translator.data.model.Language;
 import nikonorov.net.translator.data.model.TranslationPair;
@@ -159,6 +147,19 @@ public class Repository {
 
     public void saveLanguage(final Language language) {
         Observable.just(language)
+                .map(new Func1<Language, Void>() {
+                    @Override
+                    public Void call(Language language) {
+                        db.insert(DBHelper.LANGUAGES_TABLE, language.getCV());
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+    }
+
+    public void saveLanguages(final List<Language> languages) {
+        Observable.from(languages)
                 .map(new Func1<Language, Void>() {
                     @Override
                     public Void call(Language language) {

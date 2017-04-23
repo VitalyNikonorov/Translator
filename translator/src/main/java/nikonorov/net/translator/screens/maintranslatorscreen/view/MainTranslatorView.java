@@ -2,6 +2,8 @@ package nikonorov.net.translator.screens.maintranslatorscreen.view;
 
 import android.support.annotation.StringRes;
 
+import java.util.List;
+
 import nikonorov.net.translator.mvp.view.MVPView;
 
 /**
@@ -14,4 +16,6 @@ public interface MainTranslatorView extends MVPView {
     void showError(String msg);
     void showError(@StringRes int msgId);
     void showRetryError(@StringRes int msgId);
+    void setLangsFrom(List<String> langsFrom);
+    void setLangsTo(List<String> langsFrom);
 }
