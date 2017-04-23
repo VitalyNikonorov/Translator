@@ -25,7 +25,9 @@ import nikonorov.net.translator.screens.listscreen.view.ListFragment;
 public class HistoryActivity extends BaseActivity<MainHistoryScreenPresenter>
         implements MainHistoryView, TabLayout.OnTabSelectedListener {
 
+    private final int FRAGMENT_COUNT = 2;
     private ViewPager viewPager;
+    private final ListFragment[] fragments = new ListFragment[FRAGMENT_COUNT];
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,7 +35,6 @@ public class HistoryActivity extends BaseActivity<MainHistoryScreenPresenter>
         presenter = new MainHistoryScreenPresenterImpl(this);
 
         viewPager = (ViewPager) findViewById(R.id.history_view_pager);
-        final ListFragment[] fragments = new ListFragment[2];
         fragments[0] = ListFragment.getInstance(new HistoryScreenPresenterImpl());
         fragments[1] = ListFragment.getInstance(new SavedTranslationsPresenterImpl());
         final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), fragments);
@@ -63,6 +64,7 @@ public class HistoryActivity extends BaseActivity<MainHistoryScreenPresenter>
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         viewPager.setCurrentItem(tab.getPosition());
+        fragments[tab.getPosition()].onStart();
     }
 
     @Override
