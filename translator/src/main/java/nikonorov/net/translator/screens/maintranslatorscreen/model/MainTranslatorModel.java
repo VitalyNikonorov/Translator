@@ -4,6 +4,7 @@ import java.util.List;
 
 import nikonorov.net.translator.data.model.Language;
 import nikonorov.net.translator.data.model.TranslationPair;
+import nikonorov.net.translator.mvp.model.MVPModel;
 import nikonorov.net.translator.network.model.GetLangsResult;
 import nikonorov.net.translator.network.model.TranslationResult;
 import rx.Observable;
@@ -13,7 +14,7 @@ import rx.Observable;
  * email@nikonorov.net
  */
 
-public interface MainTranslatorModel {
+public interface MainTranslatorModel extends MVPModel {
 
     Observable<TranslationResult> translate(String text);
     Observable<List<Language>> requestLanguages(String locale);

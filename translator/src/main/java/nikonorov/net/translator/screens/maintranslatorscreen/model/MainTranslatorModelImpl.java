@@ -19,6 +19,8 @@ import nikonorov.net.translator.data.JniManager;
 import nikonorov.net.translator.data.Repository;
 import nikonorov.net.translator.data.model.Language;
 import nikonorov.net.translator.data.model.TranslationPair;
+import nikonorov.net.translator.mvp.model.MVPModel;
+import nikonorov.net.translator.mvp.model.MVPModelImpl;
 import nikonorov.net.translator.network.YandexTranslatorAPI;
 import nikonorov.net.translator.network.model.GetLangsResult;
 import nikonorov.net.translator.network.model.TranslationResult;
@@ -32,7 +34,7 @@ import rx.schedulers.Schedulers;
  * email@nikonorov.net
  */
 
-public class MainTranslatorModelImpl implements MainTranslatorModel {
+public class MainTranslatorModelImpl extends MVPModelImpl implements MainTranslatorModel {
 
     @Inject
     YandexTranslatorAPI translatorAPI;
@@ -131,11 +133,6 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     @Override
     public void handleError(TranslationResult result) {
         //TODO send msg about error
-    }
-
-    @Override
-    public void handleError(Throwable error) {
-        //TODO send msd about error
     }
 
     @Override

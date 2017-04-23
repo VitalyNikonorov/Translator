@@ -51,7 +51,7 @@ public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        model.handleError(e);
                     }
 
                     @Override
@@ -78,7 +78,7 @@ public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
 
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
+                model.handleError(e);
             }
 
             @Override

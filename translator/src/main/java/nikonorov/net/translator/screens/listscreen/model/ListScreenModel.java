@@ -3,6 +3,7 @@ package nikonorov.net.translator.screens.listscreen.model;
 import java.util.List;
 
 import nikonorov.net.translator.data.model.TranslationPair;
+import nikonorov.net.translator.mvp.model.MVPModel;
 import rx.Observable;
 
 /**
@@ -10,7 +11,7 @@ import rx.Observable;
  * email@nikonorov.net
  */
 
-public interface ListScreenModel {
+public interface ListScreenModel extends MVPModel {
     Observable<List<TranslationPair>> getHistory();
     Observable<List<TranslationPair>> getBookmarks();
     void changeBookmarkStatus(TranslationPair translation);

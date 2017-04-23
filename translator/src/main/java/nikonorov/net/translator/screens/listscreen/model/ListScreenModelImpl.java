@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import nikonorov.net.translator.TranslatorApplication;
 import nikonorov.net.translator.data.Repository;
 import nikonorov.net.translator.data.model.TranslationPair;
+import nikonorov.net.translator.mvp.model.MVPModelImpl;
 import rx.Observable;
 
 /**
@@ -14,7 +15,7 @@ import rx.Observable;
  * email@nikonorov.net
  */
 
-public class ListScreenModelImpl implements ListScreenModel {
+public class ListScreenModelImpl extends MVPModelImpl implements ListScreenModel {
 
     @Inject
     Repository repository;

@@ -126,7 +126,7 @@ public class MainTranslatorPresenterImpl
 
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
+                model.handleError(e);
             }
 
             @Override
@@ -163,7 +163,7 @@ public class MainTranslatorPresenterImpl
 
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
+                model.handleError(e);
             }
 
             @Override
@@ -233,7 +233,7 @@ public class MainTranslatorPresenterImpl
 
                         @Override
                         public void onError(Throwable e) {
-                            e.printStackTrace();
+                            model.handleError(e);
                         }
 
                         @Override
