@@ -18,4 +18,6 @@ public interface MainTranslatorView extends MVPView {
     void showRetryError(@StringRes int msgId);
     void setLangsFrom(List<String> langsFrom);
     void setLangsTo(List<String> langsFrom);
+    void setActiveBookmarkBtn(boolean isAlreadyBookmark);
+    void hideBookMarkBtn();
 }

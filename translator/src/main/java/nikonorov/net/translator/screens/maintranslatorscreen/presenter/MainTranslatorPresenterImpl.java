@@ -156,6 +156,11 @@ public class MainTranslatorPresenterImpl
         model.setLangTo(position);
     }
 
+    @Override
+    public void onAddBookmarkClick() {
+
+    }
+
     protected void prepareSubscription(Subscription subscription) {
         if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();

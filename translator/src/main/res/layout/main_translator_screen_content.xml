@@ -27,6 +27,14 @@
             android:text="translate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/add_bookmark_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="16dp"
+            android:layout_below="@id/translated_text"/>
     </RelativeLayout>
 
 

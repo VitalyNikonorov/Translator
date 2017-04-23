@@ -2,6 +2,7 @@ package nikonorov.net.translator.screens.maintranslatorscreen.view;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +41,7 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
     private final ArrayList<String> langsTo = new ArrayList<>();
     private ArrayAdapter<String> langsFromAdapter;
     private ArrayAdapter<String> langsToAdapter;
+    private ImageView addBookMarkBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +60,8 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
         langsToAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         langToSpinner.setAdapter(langsToAdapter);
         langToSpinner.setOnItemSelectedListener(this);
+        addBookMarkBtn = (ImageView) findViewById(R.id.add_bookmark_btn);
+        addBookMarkBtn.setOnClickListener(this);
     }
 
     @Override
@@ -120,6 +125,23 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
         langsToAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void setActiveBookmarkBtn(boolean isAlreadyBookmark) {
+        @DrawableRes int res;
+        if (isAlreadyBookmark) {
+            res = R.drawable.ic_bookmark_selected;
+        } else {
+            res = R.drawable.ic_bookmark_notselected;
+        }
+        addBookMarkBtn.setImageResource(res);
+        addBookMarkBtn.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideBookMarkBtn() {
+        addBookMarkBtn.setVisibility(View.GONE);
+    }
+
     private void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
@@ -129,6 +151,10 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
         switch (v.getId()){
             case R.id.translate_btn:
                 presenter.onTranslateBtnClick(translationField.getText().toString());
+                break;
+
+            case R.id.add_bookmark_btn:
+                presenter.onAddBookmarkClick();
                 break;
         }
     }
