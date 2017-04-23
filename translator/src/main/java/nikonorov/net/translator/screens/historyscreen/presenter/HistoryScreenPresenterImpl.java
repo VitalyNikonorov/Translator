@@ -30,6 +30,7 @@ public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
 
     @Override
     public void onListItemIconClick(TranslationPair translation, int position) {
+        translation.setHistory(true);
         model.changeBookmarkStatus(translation);
         ListScreenView view = viewRef.get();
         if (view != null) {
@@ -50,7 +51,7 @@ public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
 
                     @Override

@@ -179,6 +179,7 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     public boolean changeBookmarkStatus() {
         boolean newStatus = !currentTranslation.isBookmark();
         currentTranslation.setBookmark(newStatus);
+        currentTranslation.setHistory(true);
         repository.saveTranslation(currentTranslation);
         return newStatus;
     }

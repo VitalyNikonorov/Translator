@@ -77,7 +77,7 @@ public class SavedTranslationsPresenterImpl extends BaseListScreenPresenter {
 
             @Override
             public void onError(Throwable e) {
-
+                e.printStackTrace();
             }
 
             @Override

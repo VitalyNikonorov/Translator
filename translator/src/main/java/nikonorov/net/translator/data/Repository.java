@@ -71,7 +71,7 @@ public class Repository {
 
     public Observable<List<TranslationPair>> getHistory() {
         Observable<List<TranslationPair>> observable = Observable.just(
-                db.query(String.format("SELECT * FROM %s WHERE %s=%d", DBHelper.HISTORY_TABLE, DBHelper.IS_HISTORY, DBHelper.TRUE)))
+                db.query(String.format("SELECT * FROM %s WHERE %s = %d", DBHelper.HISTORY_TABLE, DBHelper.IS_HISTORY, DBHelper.TRUE)))
                 .map(new Func1<Cursor, List<TranslationPair>>() {
                     @Override
                     public List<TranslationPair> call(Cursor cursor) {
@@ -218,13 +218,15 @@ public class Repository {
                         db.update(DBHelper.HISTORY_TABLE, translation.getCV(), null);
                     } else {
                         db.delete(DBHelper.HISTORY_TABLE,
-                                String.format("%s = \'%s\' AND %s = \'%s\' AND %s = \'%s\'",
+                                String.format("%s = \'%s\' AND %s = \'%s\' AND %s = \'%s\' AND %s = %d",
                                         DBHelper.ORIGINAL_TEXT,
                                         translation.originalText,
                                         DBHelper.TRANSLATED_TEXT,
                                         translation.translatedText,
                                         DBHelper.LANGUAGE_DIRECTION,
-                                        translation.lang)
+                                        translation.lang,
+                                        DBHelper.IS_HISTORY,
+                                        DBHelper.TRUE)
                         );
                     }
                 }
@@ -243,13 +245,15 @@ public class Repository {
                         db.update(DBHelper.HISTORY_TABLE, translation.getCV(), null);
                     } else {
                         db.delete(DBHelper.HISTORY_TABLE,
-                                String.format("%s = \'%s\' AND %s = \'%s\' AND %s = \'%s\'",
+                                String.format("%s = \'%s\' AND %s = \'%s\' AND %s = \'%s\' AND %s = %d",
                                         DBHelper.ORIGINAL_TEXT,
                                         translation.originalText,
                                         DBHelper.TRANSLATED_TEXT,
                                         translation.translatedText,
                                         DBHelper.LANGUAGE_DIRECTION,
-                                        translation.lang)
+                                        translation.lang,
+                                        DBHelper.IS_BOOKMARK,
+                                        DBHelper.TRUE)
                         );
                     }
                 }
