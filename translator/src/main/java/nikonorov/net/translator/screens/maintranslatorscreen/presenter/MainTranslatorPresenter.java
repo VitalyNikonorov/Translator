@@ -15,4 +15,5 @@ public interface MainTranslatorPresenter extends MVPPresenter {
     void onLangFromSelected(int position);
     void onLangToSelected(int position);
     void onAddBookmarkClick();
+    void onTranslationTextDeleted();
 }

@@ -38,6 +38,7 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
 
     private final String key;
     private String textForTranslation;
+    private TranslationPair currentTranslation;
     private final String autoDetectLang = "";
 
     private final ArrayList<Language> langsFrom = new ArrayList<>();
@@ -105,6 +106,7 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     @Override
     public void saveTranslation(TranslationResult translationResult) {
         TranslationPair translation = new TranslationPair(textForTranslation, TextUtils.join(", ", translationResult.text), translationResult.lang);
+        currentTranslation = translation;
         repository.saveTranslation(translation);
     }
 
@@ -153,5 +155,11 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     @Override
     public void setLangTo(int position) {
         langToPosition = position;
+    }
+
+    @Override
+    public void addBookmark() {
+        currentTranslation.setBookmark(!currentTranslation.isBookmark());
+        repository.saveTranslation(currentTranslation);
     }
 }

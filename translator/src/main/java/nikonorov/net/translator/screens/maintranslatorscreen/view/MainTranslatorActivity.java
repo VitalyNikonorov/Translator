@@ -6,6 +6,9 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -49,6 +52,24 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
         presenter = new MainTranslatorPresenterImpl(this);
         translatedTV = (TextView) findViewById(R.id.translated_text);
         translationField = (EditText) findViewById(R.id.translating_text);
+        translationField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (TextUtils.isEmpty(translationField.getText())) {
+                    presenter.onTranslationTextDeleted();
+                }
+            }
+        });
         findViewById(R.id.translate_btn).setOnClickListener(this);
         langFromSpinner = (Spinner) findViewById(R.id.lang_from_spinner);
         langsFromAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, langsFrom);
@@ -84,6 +105,7 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
     @Override
     public void showTranslatedResult(String text) {
         translatedTV.setText(text);
+        setActiveBookmarkBtn(false);//TODO add checking for is this bookmark
     }
 
     @Override
@@ -139,7 +161,7 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
 
     @Override
     public void hideBookMarkBtn() {
-        addBookMarkBtn.setVisibility(View.GONE);
+        addBookMarkBtn.setVisibility(View.INVISIBLE);
     }
 
     private void showToast(String msg) {

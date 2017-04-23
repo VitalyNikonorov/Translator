@@ -33,6 +33,7 @@ public class MainTranslatorPresenterImpl
     private final MainTranslatorModel model;
     private Subscription translationSubscription = Subscriptions.empty();
     private Subscription getLangsSubscription = Subscriptions.empty();
+    private final String locale = Locale.getDefault().getLanguage();
 
     public MainTranslatorPresenterImpl(MainTranslatorView view) {
         this.model = new MainTranslatorModelImpl();
@@ -106,7 +107,6 @@ public class MainTranslatorPresenterImpl
 
     @Override
     public void onStart() {
-        final String locale = Locale.getDefault().getLanguage();
         prepareSubscription(getLangsSubscription);
         getLangsSubscription = model
                 .requestLanguages(locale)
@@ -158,7 +158,16 @@ public class MainTranslatorPresenterImpl
 
     @Override
     public void onAddBookmarkClick() {
+        model.addBookmark();
+    }
 
+    @Override
+    public void onTranslationTextDeleted() {
+        MainTranslatorView view = viewReference.get();
+        if (view != null) {
+            view.hideBookMarkBtn();
+            view.showTranslatedResult("");
+        }
     }
 
     protected void prepareSubscription(Subscription subscription) {
