@@ -192,7 +192,7 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
     @Override
     public boolean isInternetAvailable() {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork.isConnectedOrConnecting();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
     @Override

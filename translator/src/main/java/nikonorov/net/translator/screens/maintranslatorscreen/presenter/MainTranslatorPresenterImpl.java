@@ -48,9 +48,9 @@ public class MainTranslatorPresenterImpl
 
     @Override
     public void callTranslation(String text) {
+        prepareSubscription(translationSubscription);
         model.setTextForTranslation(text);
         if (model.isInternetAvailable()) {
-            prepareSubscription(translationSubscription);
             translationSubscription = model.translate(text).subscribe(new Observer<TranslationResult>() {
                 @Override
                 public void onCompleted() {
