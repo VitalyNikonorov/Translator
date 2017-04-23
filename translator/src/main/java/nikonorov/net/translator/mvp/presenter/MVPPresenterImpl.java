@@ -15,6 +15,10 @@ import nikonorov.net.translator.mvp.view.MVPView;
 public abstract class MVPPresenterImpl<T extends MVPView> implements MVPPresenter {
     protected WeakReference<T> viewReference;
 
+    protected T view(){
+        return viewReference.get();
+    }
+
     @Override
     public void onNavigationItemClick(@IdRes int id) {
         T view = viewReference.get();

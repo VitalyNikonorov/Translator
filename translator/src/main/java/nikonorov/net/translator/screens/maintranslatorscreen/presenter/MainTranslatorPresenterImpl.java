@@ -58,7 +58,7 @@ public class MainTranslatorPresenterImpl
             @Override
             public void onError(Throwable e) {
                 model.handleError(e);
-                MainTranslatorView view = viewReference.get();
+                MainTranslatorView view = view();
                 if (view != null) {
                     view.showError(R.string.internal_error_msg);
                 }
@@ -67,7 +67,7 @@ public class MainTranslatorPresenterImpl
 
             @Override
             public void onNext(TranslationResult translationResult) {
-                MainTranslatorView view = viewReference.get();
+                MainTranslatorView view = view();
                 switch (translationResult.code) {
                     case 200:
                         handleSuccessResult(translationResult);
@@ -109,7 +109,7 @@ public class MainTranslatorPresenterImpl
     }
 
     private void handleSuccessResult(final TranslationResult translationResult) {
-        final MainTranslatorView view = viewReference.get();
+        final MainTranslatorView view = view();
         model.getTranslationFromDB(translationResult).subscribe(new Observer<TranslationPair>() {
             @Override
             public void onCompleted() {
@@ -161,7 +161,7 @@ public class MainTranslatorPresenterImpl
             @Override
             public void onNext(List<Language> languages) {
                 model.setLanguages(languages, locale);
-                MainTranslatorView view = viewReference.get();
+                MainTranslatorView view = view();
                 if (view != null) {
                     view.setLangsFrom(model.getFromLanguages());
                     view.setLangsTo(model.getToLanguages());
@@ -200,7 +200,7 @@ public class MainTranslatorPresenterImpl
     public void onTranslationTextChanged(final String text) {
         prepareSubscription(translationTextChanges);
         if ("".equals(text)) {
-            MainTranslatorView view = viewReference.get();
+            MainTranslatorView view = view();
             if (view != null) {
                 view.hideBookMarkBtn();
                 view.showTranslatedResult("");

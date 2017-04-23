@@ -26,6 +26,7 @@ import nikonorov.net.translator.R;
 import nikonorov.net.translator.mvp.view.BaseActivity;
 import nikonorov.net.translator.screens.maintranslatorscreen.presenter.MainTranslatorPresenter;
 import nikonorov.net.translator.screens.maintranslatorscreen.presenter.MainTranslatorPresenterImpl;
+import nikonorov.net.translator.utils.ThreadUtils;
 
 /**
  * Created by Vitaly Nikonorov on 18.03.17.
@@ -103,7 +104,6 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
     @Override
     public void showTranslatedResult(String text) {
         translatedTV.setText(text);
-        setActiveBookmarkBtn(false);//TODO add checking for is this bookmark
     }
 
     @Override
@@ -146,22 +146,32 @@ public class MainTranslatorActivity extends BaseActivity<MainTranslatorPresenter
     }
 
     @Override
-    public void setActiveBookmarkBtn(boolean isAlreadyBookmark) {
-        @DrawableRes int res;
-        if (isAlreadyBookmark) {
-            res = R.drawable.ic_bookmark_selected;
-        } else {
-            res = R.drawable.ic_bookmark_notselected;
-        }
-        Picasso.with(this)
-                .load(res)
-                .into(addBookMarkBtn);
-        addBookMarkBtn.setVisibility(View.VISIBLE);
+    public void setActiveBookmarkBtn(final boolean isAlreadyBookmark) {
+        ThreadUtils.executeOnMain(new Runnable() {
+            @Override
+            public void run() {
+                @DrawableRes int res;
+                if (isAlreadyBookmark) {
+                    res = R.drawable.ic_bookmark_selected;
+                } else {
+                    res = R.drawable.ic_bookmark_notselected;
+                }
+                Picasso.with(MainTranslatorActivity.this)
+                        .load(res)
+                        .into(addBookMarkBtn);
+                addBookMarkBtn.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void hideBookMarkBtn() {
-        addBookMarkBtn.setVisibility(View.INVISIBLE);
+        ThreadUtils.executeOnMain(new Runnable() {
+            @Override
+            public void run() {
+                addBookMarkBtn.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     private void showToast(String msg) {
