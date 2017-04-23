@@ -208,8 +208,8 @@ public class Repository {
                 .subscribe();
     }
 
-    public void clearHistory() {
-        getHistory().map(new Func1<List<TranslationPair>, Void>() {
+    public Observable clearHistory() {
+        return getHistory().map(new Func1<List<TranslationPair>, Void>() {
             @Override
             public Void call(List<TranslationPair> translationPairs) {
                 for (TranslationPair translation : translationPairs) {
@@ -228,8 +228,8 @@ public class Repository {
         });
     }
 
-    public void clearBookmarks() {
-        getBookmarks().map(new Func1<List<TranslationPair>, Void>() {
+    public Observable clearBookmarks() {
+        return getBookmarks().map(new Func1<List<TranslationPair>, Void>() {
             @Override
             public Void call(List<TranslationPair> translationPairs) {
                 for (TranslationPair translation : translationPairs) {

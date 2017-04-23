@@ -40,12 +40,12 @@ public class ListScreenModelImpl implements ListScreenModel {
     }
 
     @Override
-    public void clearHistory() {
-        repository.clearHistory();
+    public Observable clearHistory() {
+        return repository.clearHistory();
     }
 
     @Override
-    public void clearBookmarks() {
-        repository.clearBookmarks();
+    public Observable clearBookmarks() {
+        return repository.clearBookmarks();
     }
 }

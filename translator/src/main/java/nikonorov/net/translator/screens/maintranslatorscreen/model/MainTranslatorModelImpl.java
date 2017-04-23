@@ -4,6 +4,9 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -88,11 +91,17 @@ public class MainTranslatorModelImpl implements MainTranslatorModel {
                 .map(new Func1<GetLangsResult, List<Language>>() {
                     @Override
                     public List<Language> call(GetLangsResult getLangsResult) {
-                        List<Language> languages = new ArrayList<>();
+                        ArrayList<Language> languages = new ArrayList<>();
                         for (String lang : getLangsResult.langs.keySet()) {
                             Language language = new Language(getLangsResult.langs.get(lang), lang, locale);
                             languages.add(language);
                         }
+                        Collections.sort(languages, new Comparator<Language>() {
+                            @Override
+                            public int compare(Language o1, Language o2) {
+                                return o1.description.compareTo(o2.description);
+                            }
+                        });
                         if (!langsTo.equals(languages)){
                             repository.saveLanguages(languages);
                         }

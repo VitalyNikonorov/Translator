@@ -22,6 +22,10 @@ public class SavedTranslationsPresenterImpl extends BaseListScreenPresenter {
 
     @Override
     public void onStart() {
+        callBookmarksRequest();
+    }
+
+    private void callBookmarksRequest() {
         prepareSubscription();
         subscription = model.getBookmarks()
                 .subscribeOn(Schedulers.io())
@@ -46,6 +50,21 @@ public class SavedTranslationsPresenterImpl extends BaseListScreenPresenter {
 
     @Override
     public void onDeleteBtnClick() {
-        model.clearBookmarks();
+        model.clearBookmarks().subscribe(new Observer() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Object o) {
+                callBookmarksRequest();
+            }
+        });
     }
 }

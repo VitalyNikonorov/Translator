@@ -27,6 +27,10 @@ public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
         if (screenView != null) {
             screenView.showPreloader();
         }
+        callHistoryRequest();
+    }
+
+    private void callHistoryRequest() {
         prepareSubscription();
         subscription = model.getHistory()
                 .subscribeOn(Schedulers.io())
@@ -58,6 +62,21 @@ public class HistoryScreenPresenterImpl extends BaseListScreenPresenter {
 
     @Override
     public void onDeleteBtnClick() {
-        model.clearHistory();
+        model.clearHistory().subscribe(new Observer() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Object o) {
+                callHistoryRequest();
+            }
+        });
     }
 }
