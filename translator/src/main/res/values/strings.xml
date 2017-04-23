@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Translator</string>
-    <string name="title_activity_main_one">MainActivity1</string>
+    <string name="app_name">Переводчик</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
